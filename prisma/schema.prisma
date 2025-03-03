@@ -12,3 +12,112 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Admins {
+  id        String     @id @default(uuid())
+  name      String     @db.VarChar(255)
+  username  String     @unique @db.VarChar(100)
+  password  String     @db.VarChar(255)
+  role      AdminRoles @default(admin)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updateAt  DateTime   @updatedAt @map("updated_at")
+
+  @@map("admin")
+}
+
+enum AdminRoles {
+  superadmin
+  admin
+}
+
+model Users {
+  id          String        @id @default(uuid())
+  mobile      String        @db.VarChar(50)
+  fullName    String?       @map("full_name") @db.VarChar(255)
+  email       String?       @db.VarChar(255)
+  gender      String?       @db.VarChar(255)
+  address     String?       @db.VarChar(255)
+  birth       DateTime?
+  heightFt    Int?          @map("height_ft")
+  heightin    Int?          @map("height_in")
+  weight      Int?
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updateAt    DateTime      @updatedAt @map("updated_at")
+  Otp         Otp[]
+  Workout     Workout[]
+  WorkoutGoal WorkoutGoal[]
+
+  @@map("users")
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  mobile    String?  @db.VarChar(50)
+  code      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  expiresAt DateTime @db.Timestamp(5)
+  useCase   UseCase
+
+  owner Users? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("otp")
+}
+
+enum UseCase {
+  LOGIN
+  SIGNUP
+}
+
+model Workout {
+  id          String       @id @default(uuid())
+  userId      String       @map("user_id")
+  calories    Decimal?     @default(0) @db.Decimal(10, 2)
+  distance    Decimal?     @default(0) @db.Decimal(10, 2)
+  heartPts    Decimal?     @default(0) @map("heart_pts") @db.Decimal(10, 2)
+  steps       Int?         @default(0)
+  workoutTime Int?         @map("workout_time")
+  type        WorkoutType? @default(walking)
+  duration    String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("workout")
+}
+
+enum WorkoutType {
+  running
+  walking
+  cycling
+}
+
+model WorkoutGoal {
+  id               String    @id @default(uuid())
+  userId           String    @map("user_id")
+  bmi              Decimal?  @db.Decimal(4, 2)
+  weightGoal       Int       @map("weight_goal")
+  goalType         GoalType  @map("goal_type")
+  dailyDuration    Int?      @map("daily_duration")
+  days             String?
+  activateReminder Boolean?  @default(false) @map("activate_reminder")
+  reminderTime     DateTime? @db.Time()
+  totalDays        Int?      @map("total_days")
+  consumption      Decimal   @db.Decimal(8, 2)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("workout_goal")
+}
+
+model What {
+  id String @id @default(uuid())
+}
+
+enum GoalType {
+  a
+}
