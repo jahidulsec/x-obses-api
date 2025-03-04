@@ -21,6 +21,8 @@ model Admins {
   role      AdminRoles @default(admin)
   createdAt DateTime   @default(now()) @map("created_at")
   updateAt  DateTime   @updatedAt @map("updated_at")
+  marathon  Marathon[]
+  Blogs     Blogs[]
 
   @@map("admin")
 }
@@ -31,21 +33,22 @@ enum AdminRoles {
 }
 
 model Users {
-  id          String        @id @default(uuid())
-  mobile      String        @db.VarChar(50)
-  fullName    String?       @map("full_name") @db.VarChar(255)
-  email       String?       @db.VarChar(255)
-  gender      String?       @db.VarChar(255)
-  address     String?       @db.VarChar(255)
-  birth       DateTime?
-  heightFt    Int?          @map("height_ft")
-  heightin    Int?          @map("height_in")
-  weight      Int?
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updateAt    DateTime      @updatedAt @map("updated_at")
-  Otp         Otp[]
-  Workout     Workout[]
-  WorkoutGoal WorkoutGoal[]
+  id           String         @id @default(uuid())
+  mobile       String         @db.VarChar(50)
+  fullName     String?        @map("full_name") @db.VarChar(255)
+  email        String?        @db.VarChar(255)
+  gender       String?        @db.VarChar(255)
+  address      String?        @db.VarChar(255)
+  birth        DateTime?
+  heightFt     Int?           @map("height_ft")
+  heightin     Int?           @map("height_in")
+  weight       Int?
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updateAt     DateTime       @updatedAt @map("updated_at")
+  Otp          Otp[]
+  Workout      Workout[]
+  WorkoutGoal  WorkoutGoal[]
+  MarathonUser MarathonUser[]
 
   @@map("users")
 }
@@ -69,6 +72,8 @@ enum UseCase {
   LOGIN
   SIGNUP
 }
+
+//------ WORKOUT -------//
 
 model Workout {
   id          String       @id @default(uuid())
@@ -99,7 +104,7 @@ model WorkoutGoal {
   userId           String    @map("user_id")
   bmi              Decimal?  @db.Decimal(4, 2)
   weightGoal       Int       @map("weight_goal")
-  goalType         GoalType  @map("goal_type")
+  goalType         GoalType  @default(gain_muscle) @map("goal_type")
   dailyDuration    Int?      @map("daily_duration")
   days             String?
   activateReminder Boolean?  @default(false) @map("activate_reminder")
@@ -114,10 +119,65 @@ model WorkoutGoal {
   @@map("workout_goal")
 }
 
-model What {
-  id String @id @default(uuid())
+enum GoalType {
+  gain_muscle
+  keep_fit
+  lose_weight
 }
 
-enum GoalType {
-  a
+//------ MARATHON -------//
+model Marathon {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  about       String       @db.Text
+  startDate   DateTime     @map("start_date")
+  endDate     DateTime     @map("end_date")
+  rewards     String
+  imagePath   String?      @map("image_path")
+  type        MarathonType @default(onsite)
+  createdBy   String?      @map("created_by")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  admin        Admins?        @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+  MarathonUser MarathonUser[]
+
+  @@map("marathon")
+}
+
+enum MarathonType {
+  virtual
+  onsite
+}
+
+model MarathonUser {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  marathonId String   @map("marathon_id")
+  distance   Decimal? @default(0) @db.Decimal(8, 2)
+  duration   String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  marathon Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
+
+  @@map("marathon_user")
+}
+
+// -------- BLOGS ---------- //
+model Blogs {
+  id          String   @id @default(uuid())
+  adminId     String   @map("admin_id")
+  title       String
+  readTime    Int      @map("read_time")
+  description String   @db.Text
+  details     String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  admin Admins @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("blogs")
 }
