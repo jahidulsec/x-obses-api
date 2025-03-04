@@ -29,7 +29,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     const message = `Your One-Time Password (OTP) for X-Obses sign-up is ${created.code}.`;
 
     const send = await fetch(
-      `${process.env.SMS_PROVIDER_URL}?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
+      `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
       {
         method: "GET",
       }

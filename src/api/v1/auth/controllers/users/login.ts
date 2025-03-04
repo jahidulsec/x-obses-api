@@ -29,11 +29,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const message = `Your One-Time Password (OTP) for X-Obses login is ${created.code}.`;
 
     const send = await fetch(
-      `${process.env.SMS_PROVIDER_URL}?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${created.mobile}&Message=${message}`,
+      `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
       {
         method: "GET",
       }
     );
+
 
     if (!send.ok) {
       serverError("Something went wrong!");
@@ -42,7 +43,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "OTP is sent to " + created.mobile,
-     data: {
+      data: {
         id: created.id,
         userId: created.userId,
         mobile: validatedData.mobile,
