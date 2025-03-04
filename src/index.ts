@@ -1,8 +1,8 @@
 import { app } from "./app";
 
-const PORT = 4000;
+const PORT = process.env.SERVER_PORT || 6053;
 
-app.listen(4000, () =>
+app.listen(PORT, () =>
   console.log(`
 🚀 Server ready at: http://localhost:${PORT}`),
 );

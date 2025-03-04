@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
-import errorHandler from "./middlewares/error-handler";
+import { errorHandler } from "./middlewares/error-handler";
+import router from "./routes";
 
 // config();
 dotenv.config();
@@ -18,10 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // api endpoints
-app.get('/', (req, res) => {
-  res.send("wow")
-})
+app.get("/", (req, res) => {
+  res.send("wow");
+});
 
+app.use("/api", router);
 
 // 404 handler
 app.use((_req, res) => {
@@ -30,4 +32,3 @@ app.use((_req, res) => {
 
 // Use error handling middleware
 app.use(errorHandler);
-

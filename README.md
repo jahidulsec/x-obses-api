@@ -11,10 +11,10 @@ Create `.env` file with following variables
 
 ```
 DATABASE_URL=postgresql://username:randompassword@localhost:5432/mydb?schema=public
-SESSION_SECRET=GENERATE_CODE_AND_ADD
+ACCESS_TOKEN_SECRET_KEY=GENERATE_CODE_AND_ADD
 ```
 
-To generate `SESSION_SECRET` key,
+To generate `ACCESS_TOKEN_SECRET_KEY` key,
 
 ```bash
 openssl rand -base64 32

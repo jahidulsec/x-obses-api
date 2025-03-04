@@ -34,7 +34,7 @@ enum AdminRoles {
 
 model Users {
   id           String         @id @default(uuid())
-  mobile       String         @db.VarChar(50)
+  mobile       String         @db.VarChar(50) @unique
   fullName     String?        @map("full_name") @db.VarChar(255)
   email        String?        @db.VarChar(255)
   gender       String?        @db.VarChar(255)
@@ -69,8 +69,8 @@ model Otp {
 }
 
 enum UseCase {
-  LOGIN
-  SIGNUP
+  login
+  signup
 }
 
 //------ WORKOUT -------//
