@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import { createLoginDTOSchema } from "../../../../../schemas/user-login";
 import authService from "../../../../../lib/auth/users";
-import db from "../../../../../db/db";
+import userService from "../../../../../lib/user/profile";
 import { notFoundError, serverError } from "../../../../../utils/errors";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -12,11 +12,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = createLoginDTOSchema.parse(formData);
 
     // check user
-    const user = await db.users.findUnique({
-      where: {
-        mobile: validatedData.mobile,
-      },
-    });
+    const user = await userService.getSingleByMobile(validatedData.mobile);
 
     if (!user) {
       notFoundError("User does not exist with this mobile");
@@ -34,7 +30,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         method: "GET",
       }
     );
-
 
     if (!send.ok) {
       serverError("Something went wrong!");

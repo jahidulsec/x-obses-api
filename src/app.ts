@@ -14,7 +14,8 @@ export const app = express();
 app.use(cors());
 
 // middlewares
-app.use(express.static(path.join(__dirname, "..", "public")));
+const publicFolderUploads = path.join(__dirname, '../uploads/photos');
+app.use('/uploads/photos', express.static(publicFolderUploads));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 

@@ -37,6 +37,7 @@ model Users {
   mobile       String         @db.VarChar(50) @unique
   fullName     String?        @map("full_name") @db.VarChar(255)
   email        String?        @db.VarChar(255)
+  image        String?        @db.VarChar(255)
   gender       String?        @db.VarChar(255)
   address      String?        @db.VarChar(255)
   birth        DateTime?
