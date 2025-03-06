@@ -77,17 +77,16 @@ enum UseCase {
 //------ WORKOUT -------//
 
 model Workout {
-  id          String       @id @default(uuid())
-  userId      String       @map("user_id")
-  calories    Decimal?     @default(0) @db.Decimal(10, 2)
-  distance    Decimal?     @default(0) @db.Decimal(10, 2)
-  heartPts    Decimal?     @default(0) @map("heart_pts") @db.Decimal(10, 2)
-  steps       Int?         @default(0)
-  workoutTime Int?         @map("workout_time")
-  type        WorkoutType? @default(walking)
-  duration    Decimal?     @default(0) @db.Decimal(10, 2) // count in minutes
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
+  id        String       @id @default(uuid())
+  userId    String       @map("user_id")
+  calories  Decimal?     @default(0) @db.Decimal(10, 2)
+  distance  Decimal?     @default(0) @db.Decimal(10, 2)
+  heartPts  Decimal?     @default(0) @map("heart_pts") @db.Decimal(10, 2)
+  steps     Int?         @default(0)
+  type      WorkoutType? @default(walking)
+  duration  Decimal?     @default(0) @db.Decimal(10, 2) // count in minutes
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
 
   user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -106,17 +105,20 @@ model WorkoutGoal {
   bmi              Decimal?  @db.Decimal(4, 2)
   weightGoal       Int       @map("weight_goal")
   goalType         GoalType  @default(gain_muscle) @map("goal_type")
-  dailyDuration    Decimal?  @map("daily_duration") @db.Decimal(8,2) // count in minutes
-  days             String?
+  workoutTime      Decimal?  @map("workout_time") @db.Decimal(8, 2) // count in minutes
+  workoutDays      String?   @map("workout_days")
   activateReminder Boolean?  @default(false) @map("activate_reminder")
   reminderTime     DateTime? @db.Time()
   totalDays        Int?      @map("total_days")
-  consumption      Decimal   @db.Decimal(8, 2)
+  consumption      Decimal?   @db.Decimal(8, 2)
+  startDate        DateTime? @default(now()) @map("start_date")
+  endDate          DateTime? @map("end_date")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
   user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, createdAt])
   @@map("workout_goal")
 }
 
@@ -157,7 +159,7 @@ model MarathonUser {
   userId     String   @map("user_id")
   marathonId String   @map("marathon_id")
   distance   Decimal? @default(0) @db.Decimal(8, 2)
-  duration   Decimal? @db.Decimal(10,2) @default(0) // count in minutes
+  duration   Decimal? @default(0) @db.Decimal(10, 2) // count in minutes
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
