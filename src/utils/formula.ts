@@ -37,4 +37,9 @@ const calculateCaloriesBurn = (
   return MET * weightKg * hours; // kCal
 };
 
+// BMR Formula (Mifflin-St Jeor):
+
+//     Men: 10 × weight (kg) + 6.25 × height (cm) - 5 × age (years) + 5
+//     Women: 10 × weight (kg) + 6.25 × height (cm) - 5 × age (years) - 161
+
 export { calculateHeartPts, calculateCaloriesBurn };

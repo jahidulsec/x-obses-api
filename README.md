@@ -7,12 +7,7 @@ Backend: ExpressJS, Prisma ORM, TypeScript
 
 ## Run this project
 
-Create `.env` file with following variables
-
-```
-DATABASE_URL=postgresql://username:randompassword@localhost:5432/mydb?schema=public
-ACCESS_TOKEN_SECRET_KEY=GENERATE_CODE_AND_ADD
-```
+Create `.env` file from `.env.example` file.
 
 To generate `ACCESS_TOKEN_SECRET_KEY` key,
 
