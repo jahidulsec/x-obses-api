@@ -10,6 +10,12 @@ router.route("/profile/token")
 .patch(verifyToken, controllers.updateUserByToken)
 .delete(verifyToken, controllers.deleteUserByToken)
 
-router.route("/profile/:id").get().patch().delete();
+// router.route("/profile/:id").get().patch().delete();
+
+
+// ---------- WORKOUT -------------- //
+router.route('/workout')
+.get(verifyToken, controllers.getUserWorkoutsByToken)
+.post(verifyToken, controllers.createUserWorkout)
 
 export { router as userRoutes };
