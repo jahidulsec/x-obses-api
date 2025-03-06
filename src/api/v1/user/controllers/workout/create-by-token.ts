@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout";
+import userProfileService from "../../../../../lib/user/profile";
 import { createWorkOutDTOSchema } from "../../../../../schemas/workout";
 import { unauthorizedError } from "../../../../../utils/errors";
+import {
+  calculateCaloriesBurn,
+  calculateHeartPts,
+} from "../../../../../utils/formula";
 
 async function createNew(req: Request, res: Response, next: NextFunction) {
   try {
@@ -14,24 +19,36 @@ async function createNew(req: Request, res: Response, next: NextFunction) {
       unauthorizedError("Invalid token");
     }
 
+    // get user info by token
+    const user = await userProfileService.getSingle({
+      id: authUser?.id as string,
+    });
+
     // set userId from token
     formData["userId"] = authUser?.id as string;
 
     //Validate incoming body data with defined schema
     const validatedData = createWorkOutDTOSchema.parse(formData);
 
-    let heartPts = 0;
-
-    // calculate heart pts
-    if (validatedData.type === "walking") {
-      heartPts = validatedData.duration ?? 0;
-    } else if (validatedData.type === "running") {
-      heartPts = (validatedData.duration ?? 0) * 2;
-    } else {
-      heartPts = (validatedData.duration ?? 0) * 1.5;
+    // if cycling, steps = 0
+    if (validatedData.type === "cycling") {
+      validatedData.steps = 0;
     }
 
+    const heartPts = calculateHeartPts(
+      validatedData.duration ?? 0,
+      validatedData.type
+    );
+
+    // calculate heart pts
     validatedData.heartPts = heartPts;
+
+    // calculate calories burn in kCal
+    validatedData.calories = calculateCaloriesBurn(
+      validatedData.duration ?? 0,
+      user?.weight ?? 0,
+      validatedData.type
+    );
 
     //create new with validated data
     const created = await userService.createNew(validatedData);

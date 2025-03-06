@@ -18,11 +18,6 @@ async function updateOne(req: Request, res: Response, next: NextFunction) {
 
     const formData = req.body;
 
-    if (fileData) {
-      formData["image"] = fileData;
-      uploadedPhoto = fileData;
-    }
-
     // get user id from token
     const authUser = req.user;
 
@@ -34,13 +29,21 @@ async function updateOne(req: Request, res: Response, next: NextFunction) {
     const validatedData = updateUserDTOSchema.parse(formData);
 
     //check existing zone
-    const existingZone = await userService.getSingle({
+    const existingUser = await userService.getSingle({
       id: authUser?.id as string,
     });
 
-    if (!existingZone) {
+    if (!existingUser) {
       //send not found error if not exist
       notFoundError("User does not exist");
+    }
+
+    if (fileData) {
+      formData["image"] = fileData;
+      uploadedPhoto = fileData;
+
+      // delete previous image
+      deleteImage({ folder: "photos", image: existingUser?.image || "" });
     }
 
     //update with validated data
