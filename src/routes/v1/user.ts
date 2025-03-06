@@ -4,8 +4,8 @@ import { verifyToken } from "../../middlewares/verify-token";
 
 const router = Router();
 
-// user
-router.route("/profile")
+// user profile CRUD by token
+router.route("/profile/token")
 .get(verifyToken, controllers.getUserByToken)
 .patch(verifyToken, controllers.updateUserByToken)
 .delete(verifyToken, controllers.deleteUserByToken)
