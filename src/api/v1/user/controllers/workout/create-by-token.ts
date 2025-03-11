@@ -35,13 +35,11 @@ async function createNew(req: Request, res: Response, next: NextFunction) {
       validatedData.steps = 0;
     }
 
-    const heartPts = calculateHeartPts(
+    // calculate heart pts
+    validatedData.heartPts = calculateHeartPts(
       validatedData.duration ?? 0,
       validatedData.type
     );
-
-    // calculate heart pts
-    validatedData.heartPts = heartPts;
 
     // calculate calories burn in kCal
     validatedData.calories = calculateCaloriesBurn(

@@ -4,7 +4,6 @@
 
 Backend: ExpressJS, Prisma ORM, TypeScript
 
-
 ## Run this project
 
 Create `.env` file from `.env.example` file.
@@ -33,10 +32,21 @@ npm run build
 npm run start
 ```
 
+## Endpoints
+
+### Uploads
+
+To access uploads,
+
+```
+{{base_url}}/uploads/photos/:asset_name
+```
 
 ## Testing
+
 ### Create and seed database
-Run the following command to create your database. 
+
+Run the following command to create your database.
 
 ```bash
 npx prisma migrate dev --name init
@@ -49,6 +59,7 @@ npx prisma db seed
 ```
 
 ### Testing the endpoints
+
 The tests can be run using:
 
 ```bash
