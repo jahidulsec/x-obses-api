@@ -18,4 +18,16 @@ router.route('/workout')
 .get(verifyToken, controllers.getUserWorkoutsByToken)
 .post(verifyToken, controllers.createUserWorkout)
 
+// ---------- WORKOUT PLAN -------------- //
+router.route('/workout/plan')
+.get(verifyToken, controllers.getUserWorkoutPlansByToken)
+.post(verifyToken, controllers.createUserWorkoutPlan)
+
+router.route('/workout/plan/:id')
+.get(controllers.getUserWorkoutPlan)
+.patch(controllers.updateUserWorkoutPlan)
+.delete(controllers.deleteUserWorkoutPlan)
+
+
+
 export { router as userRoutes };

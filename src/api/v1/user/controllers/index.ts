@@ -6,10 +6,22 @@ import { deleteUserByToken } from "./profile/delete-by-token";
 import { getUserWorkoutsByToken } from "./workout/get-all-by-token";
 import { createUserWorkout } from "./workout/create-by-token";
 
+//workout plan
+import { createUserWorkoutPlan } from "./workout-plan/create";
+import { getUserWorkoutPlansByToken } from "./workout-plan/get-by-token";
+import { updateUserWorkoutPlan } from "./workout-plan/update";
+import { deleteUserWorkoutPlan } from "./workout-plan/delete";
+import { getUserWorkoutPlan } from "./workout-plan/get-single";
+
 export = {
   getUserByToken,
   updateUserByToken,
   deleteUserByToken,
   getUserWorkoutsByToken,
   createUserWorkout,
+  createUserWorkoutPlan,
+  getUserWorkoutPlansByToken,
+  updateUserWorkoutPlan,
+  deleteUserWorkoutPlan,
+  getUserWorkoutPlan
 };
