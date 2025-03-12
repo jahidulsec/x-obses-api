@@ -9,7 +9,7 @@ export const createMarathonDTOSchema = z.object({
   endDate: z.coerce.date(),
   rewards: z.array(z.string()),
   imagePath: z.string().optional(),
-  type: z.enum(["onsite", "virtual"]).default("onsite"),
+  type: z.enum(["onsite", "virtual"]),
 });
 
 export const updateMarathonDTOSchema = createMarathonDTOSchema

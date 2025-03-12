@@ -62,12 +62,17 @@ const createNew = async (info: createMarathonInputsTypes) => {
       startDate: info.startDate,
       endDate: info.endDate,
       description: info.description,
+      type: info.type,
+      imagePath: info.imagePath,
       Rewards: {
         createMany: {
           data: rewardsList,
         },
       },
     },
+    include: {
+      Rewards: true
+    }
   });
 
   return data;
@@ -79,6 +84,8 @@ const updateOne = async (
 ) => {
   //extract id from validated id by zod
   const { id } = idObj;
+
+  console.log(info)
 
   const updatedData = await db.marathon.update({
     where: { id: id },

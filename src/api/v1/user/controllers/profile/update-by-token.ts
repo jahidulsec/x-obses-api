@@ -25,9 +25,6 @@ async function updateOne(req: Request, res: Response, next: NextFunction) {
       unauthorizedError("Invalid token");
     }
 
-    //Validate incoming body data with defined schema
-    const validatedData = updateUserDTOSchema.parse(formData);
-
     //check existing zone
     const existingUser = await userService.getSingle({
       id: authUser?.id as string,
@@ -45,6 +42,9 @@ async function updateOne(req: Request, res: Response, next: NextFunction) {
       // delete previous image
       deleteImage({ folder: "photos", image: existingUser?.image || "" });
     }
+
+    //Validate incoming body data with defined schema
+    const validatedData = updateUserDTOSchema.parse(formData);
 
     //update with validated data
     const updated = await userService.updateOne(
