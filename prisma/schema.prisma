@@ -152,7 +152,6 @@ model Marathon {
   about       String       @db.Text
   startDate   DateTime     @map("start_date")
   endDate     DateTime     @map("end_date")
-  rewards     String
   imagePath   String?      @map("image_path")
   type        MarathonType @default(onsite)
   createdBy   String?      @map("created_by")
@@ -161,6 +160,7 @@ model Marathon {
 
   admin        Admins?        @relation(fields: [createdBy], references: [id], onDelete: SetNull)
   MarathonUser MarathonUser[]
+  Rewards      Rewards[]
 
   @@map("marathon")
 }
@@ -168,6 +168,18 @@ model Marathon {
 enum MarathonType {
   virtual
   onsite
+}
+
+model Rewards {
+  id         String   @id @default(uuid())
+  text       String
+  marathonId String   @map("marathon_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  marathon Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
+
+  @@map("rewards")
 }
 
 model MarathonUser {
