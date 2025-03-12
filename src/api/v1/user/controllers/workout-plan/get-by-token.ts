@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
 import { workOutPlansQuerySchema } from "../../../../../schemas/workout-plan";
 import userService from "../../../../../lib/user/workout-plan";
+import { paginate } from "../../../../../utils/pagination";
 
 const getUserWorkoutPlansByToken = async (
   req: Request,
@@ -31,7 +32,10 @@ const getUserWorkoutPlansByToken = async (
     const responseData = {
       success: true,
       message: "Get user workout plan details successfully!",
-      data: data,
+      data: data.data,
+      pagination: {
+        ...paginate(data.page, data.size, data.count)
+      }
     };
 
     //send success response

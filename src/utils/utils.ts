@@ -20,11 +20,15 @@ const days = [
 const countDays = (startDate: Date, endDate: Date, day: Days) => {
   let count = 0;
 
-  while (startDate <= endDate) {
-    if (startDate.getDay() === days.findIndex((item) => item === day)) {
+  const targetDayIndex = days.findIndex((item) => item === day);
+
+  const currentDate = new Date(startDate); // Clone to avoid mutating the original startDate
+
+  while (currentDate <= endDate) {
+    if (currentDate.getDay() === targetDayIndex) {
       count++;
     }
-    startDate.setDate(startDate.getDate() + 1);
+    currentDate.setDate(currentDate.getDate() + 1);
   }
 
   return count;

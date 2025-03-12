@@ -54,7 +54,6 @@ model Users {
   @@map("users")
 }
 
-
 // model UserInformation {
 //   id       String   @id @default(uuid())
 //   userId   String   @unique @map("user_id")
@@ -96,12 +95,12 @@ enum UseCase {
 model Workout {
   id        String       @id @default(uuid())
   userId    String       @map("user_id")
-  calories  Decimal     @default(0) @db.Decimal(10, 2)
-  distance  Decimal     @default(0) @db.Decimal(10, 2)
-  heartPts  Decimal     @default(0) @map("heart_pts") @db.Decimal(10, 2)
+  calories  Decimal      @default(0) @db.Decimal(10, 2)
+  distance  Decimal      @default(0) @db.Decimal(10, 2)
+  heartPts  Decimal      @default(0) @map("heart_pts") @db.Decimal(10, 2)
   steps     Int?         @default(0)
   type      WorkoutType? @default(walking)
-  duration  Decimal     @default(0) @db.Decimal(14, 2) // count in milliseconds
+  duration  Int          @default(0) // count in milliseconds
   createdAt DateTime     @default(now()) @map("created_at")
   updatedAt DateTime     @updatedAt @map("updated_at")
 
@@ -127,7 +126,7 @@ model WorkoutGoal {
   activateReminder Boolean?  @default(false) @map("activate_reminder")
   reminderTime     DateTime? @db.Time()
   totalDays        Int?      @map("total_days")
-  consumption      Decimal?   @db.Decimal(8, 2)
+  caloriesGoal     Int?      @map("calories_goal")
   startDate        DateTime? @default(now()) @map("start_date")
   endDate          DateTime? @map("end_date")
   createdAt        DateTime  @default(now()) @map("created_at")
@@ -176,7 +175,7 @@ model MarathonUser {
   userId     String   @map("user_id")
   marathonId String   @map("marathon_id")
   distance   Decimal? @default(0) @db.Decimal(8, 2)
-  duration   Decimal? @default(0) @db.Decimal(14, 2) // count in milliseconds
+  duration   Int?     @default(0) // count in milliseconds
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 

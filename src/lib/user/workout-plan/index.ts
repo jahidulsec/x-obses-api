@@ -55,6 +55,8 @@ const getMultiById = async (
   const size = queries?.size ?? 20;
   const page = queries?.page ?? 1;
   const sort = queries?.sort ?? "desc";
+  const startDate = queries?.startDate;
+  const endDate = queries?.endDate;
 
   const { id } = idObj;
 
@@ -63,6 +65,12 @@ const getMultiById = async (
       where: {
         user: {
           id: id,
+        },
+        startDate: {
+          gte: startDate
+        },
+        endDate: {
+          lte: endDate
         },
       },
       take: size,
@@ -135,5 +143,5 @@ export = {
   createNew,
   updateOne,
   deleteOne,
-  getMultiById
+  getMultiById,
 };

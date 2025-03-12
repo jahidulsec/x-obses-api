@@ -10,7 +10,7 @@ export const createWorkOutPlanDTOSchema = z.object({
   activateReminder: z.boolean().optional(),
   reminderTime: z.coerce.date().optional(),
   totalDays: z.coerce.number().optional(),
-  consumption: z.coerce.number().optional(),
+  caloriesGoal: z.coerce.number().optional(),
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),
 });
@@ -22,6 +22,8 @@ export const updateWorkOutPlanDTOSchema = createWorkOutPlanDTOSchema
 export const workOutPlansQuerySchema = z.object({
   sort: z.enum(["asc", "desc"]).default("desc"),
   sortBy: z.string().default("updatedAt"),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
   page: z.coerce.number().int().default(1),
   size: z.coerce.number().default(20),
   search: z.string().optional(),

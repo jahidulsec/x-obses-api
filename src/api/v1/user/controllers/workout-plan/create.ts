@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout-plan";
-import { unauthorizedError } from "../../../../../utils/errors";
+import {
+  badRequestError,
+  unauthorizedError,
+} from "../../../../../utils/errors";
 import { createWorkOutPlanDTOSchema } from "../../../../../schemas/workout-plan";
 import userProfileService from "../../../../../lib/user/profile";
 import {
@@ -11,6 +14,7 @@ import {
 } from "../../../../../utils/formula";
 import { countDays, Days } from "../../../../../utils/utils";
 import { gender } from "../../../../../types/user";
+import db from "../../../../../db/db";
 
 const createUserWorkoutPlan = async (
   req: Request,
@@ -38,6 +42,19 @@ const createUserWorkoutPlan = async (
     // Validate incoming body data with defined schema
     const validatedData = createWorkOutPlanDTOSchema.parse(formData);
 
+    // check schedule
+    const scheduleList = await db.workoutGoal.findMany({
+      where: {
+        endDate: {
+          gte: validatedData.startDate,
+        },
+      },
+    });
+
+    if (scheduleList.length > 0) {
+      badRequestError("You already have an schedule");
+    }
+
     // calculate BMI
     const bmi = calculateBMI(
       user?.weight ?? 0,
@@ -48,17 +65,19 @@ const createUserWorkoutPlan = async (
     validatedData.bmi = Number(bmi);
 
     // calculate total days
-    let days = validatedData?.workoutDays?.split(",");
+    let days = validatedData?.workoutDays?.replaceAll(" ", "").split(",");
 
     let totalDays = 0;
 
-    days?.map((day) => {
-      totalDays += countDays(
-        validatedData.startDate as Date,
-        validatedData.endDate as Date,
-        day as Days
-      );
-    });
+    if (days && days.length > 0) {
+      for (let i = 0; i < days.length; i++) {
+        totalDays += countDays(
+          validatedData.startDate as Date,
+          validatedData.endDate as Date,
+          days[i] as Days
+        );
+      }
+    }
 
     validatedData.totalDays = totalDays;
 
@@ -75,7 +94,7 @@ const createUserWorkoutPlan = async (
 
     const calorieGoal = calculateCaloriesGoal(validatedData.goalType, bmr);
 
-    validatedData.consumption = calorieGoal;
+    validatedData.caloriesGoal = calorieGoal;
 
     // create new with validated data
     const created = await userService.createNew(validatedData);
