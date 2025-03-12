@@ -5,29 +5,30 @@ import { verifyToken } from "../../middlewares/verify-token";
 const router = Router();
 
 // user profile CRUD by token
-router.route("/profile/token")
-.get(verifyToken, controllers.getUserByToken)
-.patch(verifyToken, controllers.updateUserByToken)
-.delete(verifyToken, controllers.deleteUserByToken)
+router
+  .route("/profile/token")
+  .get(verifyToken, controllers.getUserByToken)
+  .patch(verifyToken, controllers.updateUserByToken)
+  .delete(verifyToken, controllers.deleteUserByToken);
 
 // router.route("/profile/:id").get().patch().delete();
 
-
 // ---------- WORKOUT -------------- //
-router.route('/workout')
-.get(verifyToken, controllers.getUserWorkoutsByToken)
-.post(verifyToken, controllers.createUserWorkout)
+router
+  .route("/workout")
+  .get(verifyToken, controllers.getUserWorkoutsByToken)
+  .post(verifyToken, controllers.createUserWorkout);
 
 // ---------- WORKOUT PLAN -------------- //
-router.route('/workout/plan')
-.get(verifyToken, controllers.getUserWorkoutPlansByToken)
-.post(verifyToken, controllers.createUserWorkoutPlan)
+router
+  .route("/workout/plan")
+  .get(verifyToken, controllers.getUserWorkoutPlansByToken)
+  .post(verifyToken, controllers.createUserWorkoutPlan);
 
-router.route('/workout/plan/:id')
-.get(controllers.getUserWorkoutPlan)
-.patch(controllers.updateUserWorkoutPlan)
-.delete(controllers.deleteUserWorkoutPlan)
-
-
+router
+  .route("/workout/plan/:id")
+  .get(verifyToken, controllers.getUserWorkoutPlan)
+  .patch(verifyToken, controllers.updateUserWorkoutPlan)
+  .delete(verifyToken, controllers.deleteUserWorkoutPlan);
 
 export { router as userRoutes };

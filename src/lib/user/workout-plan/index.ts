@@ -67,10 +67,10 @@ const getMultiById = async (
           id: id,
         },
         startDate: {
-          gte: startDate
+          gte: startDate,
         },
         endDate: {
-          lte: endDate
+          lte: endDate,
         },
       },
       take: size,
@@ -97,6 +97,17 @@ const getSingle = async (idObj: requiredIdTypes) => {
   //extract id from validated id by zod
   const data = await db.workoutGoal.findUnique({
     where: { id },
+  });
+
+  return data;
+};
+
+const getSingleByToken = async (idObj: requiredIdTypes, userId: string) => {
+  const { id } = idObj;
+
+  //extract id from validated id by zod
+  const data = await db.workoutGoal.findUnique({
+    where: { id: id, userId: userId },
   });
 
   return data;
@@ -144,4 +155,5 @@ export = {
   updateOne,
   deleteOne,
   getMultiById,
+  getSingleByToken,
 };
