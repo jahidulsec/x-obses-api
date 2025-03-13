@@ -58,6 +58,11 @@ To prepopulate with data,
 npx prisma db seed
 ```
 
+To create admin user,
+```bash
+npm run createadmin
+```
+
 ### Testing the endpoints
 
 The tests can be run using:
