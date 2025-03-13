@@ -3,12 +3,12 @@ import { z } from "zod";
 export const createWorkOutDTOSchema = z.object({
   userId: z.string(),
   calories: z.coerce.number().optional(),
-  distance: z.coerce.number().optional(),
+  distanceKm: z.coerce.number().optional(),
   heartPts: z.coerce.number().optional(),
   steps: z.coerce.number().optional(),
   workoutTime: z.coerce.number().optional(),
   type: z.enum(["running", "walking", "cycling"]).optional(),
-  duration: z.coerce.number().optional(),
+  durationMs: z.coerce.number().optional(),
 });
 
 export const updateWorkOutDTOSchema = createWorkOutDTOSchema.omit({}).partial();

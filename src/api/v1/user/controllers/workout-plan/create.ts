@@ -55,6 +55,19 @@ const createUserWorkoutPlan = async (
       badRequestError("You already have an schedule");
     }
 
+    if(!user?.heightFt || !user?.heightin) {
+      badRequestError("Please enter your height in your profile")
+    }
+
+    if(!user?.weight) {
+      badRequestError("Please enter your weight in your profile")
+    }
+
+    if(!user?.gender) {
+      badRequestError("Please enter your gender in your profile")
+    }
+
+
     // calculate BMI
     const bmi = calculateBMI(
       user?.weight ?? 0,

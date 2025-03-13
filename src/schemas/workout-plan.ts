@@ -5,7 +5,7 @@ export const createWorkOutPlanDTOSchema = z.object({
   bmi: z.coerce.number().optional(),
   weightGoal: z.coerce.number(),
   goalType: z.enum(["gain_muscle", "keep_fit", "lose_weight"]),
-  workoutTime: z.coerce.number().optional(),
+  workoutTimeMs: z.coerce.number().optional(),
   workoutDays: z.string().optional(),
   activateReminder: z.boolean().optional(),
   reminderTime: z.coerce.date().optional(),
