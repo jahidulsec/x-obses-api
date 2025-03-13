@@ -54,22 +54,6 @@ model Users {
   @@map("users")
 }
 
-// model UserInformation {
-//   id       String   @id @default(uuid())
-//   userId   String   @unique @map("user_id")
-//   fullName String   @map("full_name") @db.VarChar(255)
-//   email    String   @db.VarChar(255)
-//   image    String   @db.VarChar(255)
-//   gender   String   @db.VarChar(255)
-//   address  String   @db.VarChar(255)
-//   birth    DateTime
-//   heightFt Int      @map("height_ft")
-//   heightin Int      @map("height_in")
-//   weight   Int
-
-//   user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
-// }
-
 model Otp {
   id        String   @id @default(uuid())
   userId    String?  @map("user_id")
@@ -148,8 +132,9 @@ enum GoalType {
 model Marathon {
   id          String       @id @default(uuid())
   title       String
-  description String
+  description String       @db.Text
   about       String       @db.Text
+  location    String?
   startDate   DateTime     @map("start_date")
   endDate     DateTime     @map("end_date")
   imagePath   String?      @map("image_path")

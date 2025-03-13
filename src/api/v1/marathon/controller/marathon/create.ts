@@ -3,6 +3,7 @@ import deleteImage from "../../../../../utils/delete-image";
 import upload from "../../../../../utils/upload";
 import marathonService from "../../../../../lib/marathon/marathon";
 import { createMarathonDTOSchema } from "../../../../../schemas/marathon";
+import { badRequestError } from "../../../../../utils/errors";
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   let uploadedPhoto: any;
@@ -19,6 +20,12 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
     //Validate incoming body data with defined schema
     const validatedData = createMarathonDTOSchema.parse(formData);
+
+    if (validatedData.type === "onsite" && !validatedData.location) {
+      badRequestError("Location required for onsite marathon");
+    } else {
+      validatedData.location = "";
+    }
 
     //create new with validated data
     const created = await marathonService.createNew(validatedData);

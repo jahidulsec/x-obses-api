@@ -10,14 +10,13 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = requiredIdSchema.parse(req.params);
 
     //get single item with validated id
-    const data = await marathonService.getSingle(validatedData);
+    const { data } = await marathonService.getSingle(validatedData);
 
     if (!data) {
       notFoundError("Marathon not found!");
     }
 
     const deleted: any = await marathonService.deleteOne(validatedData);
-
 
     if (deleted == 0) {
       serverError("Marathon is not deleted");
@@ -27,7 +26,6 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     if (data?.imagePath) {
       deleteImage({ folder: "photos", image: data.imagePath });
     }
-
 
     const responseData = {
       success: true,

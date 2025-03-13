@@ -18,7 +18,8 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "Get Marathon details successfully!",
-      data: data,
+      data: data.data,
+      totalParticiants: data.totalParticiants,
     };
 
     //send success response

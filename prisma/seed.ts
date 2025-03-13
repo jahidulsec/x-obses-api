@@ -8,7 +8,8 @@ const users = [
     mobile: "1234567890",
     fullName: "Alice Johnson",
     email: "alice@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Female",
     address: "123 Main St, City, Country",
     birth: "1995-07-21T00:00:00Z",
@@ -23,7 +24,8 @@ const users = [
     mobile: "9876543210",
     fullName: "Bob Williams",
     email: "bob@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Male",
     address: "456 Another St, City, Country",
     birth: "1990-11-15T00:00:00Z",
@@ -38,7 +40,8 @@ const users = [
     mobile: "1112223333",
     fullName: "Charlie Brown",
     email: "charlie@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Male",
     address: "789 Maple St, City, Country",
     birth: "1985-05-10T00:00:00Z",
@@ -53,7 +56,8 @@ const users = [
     mobile: "4445556666",
     fullName: "Daisy Clark",
     email: "daisy@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Female",
     address: "567 Oak St, City, Country",
     birth: "1998-12-02T00:00:00Z",
@@ -68,7 +72,8 @@ const users = [
     mobile: "7778889999",
     fullName: "Ethan Adams",
     email: "ethan@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Male",
     address: "890 Pine St, City, Country",
     birth: "1992-08-22T00:00:00Z",
@@ -83,7 +88,8 @@ const users = [
     mobile: "9998887777",
     fullName: "Fiona Green",
     email: "fiona@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Female",
     address: "345 Cedar St, City, Country",
     birth: "1994-03-14T00:00:00Z",
@@ -98,7 +104,8 @@ const users = [
     mobile: "6667778888",
     fullName: "George Harrison",
     email: "george@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Male",
     address: "234 Birch St, City, Country",
     birth: "1987-09-18T00:00:00Z",
@@ -113,7 +120,8 @@ const users = [
     mobile: "5554443333",
     fullName: "Hannah Lee",
     email: "hannah@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Female",
     address: "456 Walnut St, City, Country",
     birth: "2000-07-25T00:00:00Z",
@@ -128,7 +136,8 @@ const users = [
     mobile: "2223334444",
     fullName: "Isaac Newton",
     email: "isaac@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Male",
     address: "678 Willow St, City, Country",
     birth: "1996-04-05T00:00:00Z",
@@ -143,7 +152,8 @@ const users = [
     mobile: "1110009999",
     fullName: "Jessica Parker",
     email: "jessica@example.com",
-    image: "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
+    image:
+      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Images.png",
     gender: "Female",
     address: "789 Redwood St, City, Country",
     birth: "1989-01-30T00:00:00Z",
@@ -154,6 +164,7 @@ const users = [
     updatedAt: "2024-03-13T15:15:00Z",
   },
 ];
+
 
 async function main() {
   console.log(`Start seeding ...`);

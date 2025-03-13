@@ -30,12 +30,10 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
       formData["imagePath"] = fileData;
       uploadedPhoto = fileData;
 
-      console.log(formData["imagePath"]);
-
       // delete previous image
       deleteImage({
         folder: "photos",
-        image: existingMarathon?.imagePath || "",
+        image: existingMarathon.data?.imagePath || "",
       });
     }
 

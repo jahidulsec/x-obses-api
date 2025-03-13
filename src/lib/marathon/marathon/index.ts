@@ -43,11 +43,16 @@ const getSingle = async (idObj: requiredIdTypes) => {
   const { id } = idObj;
 
   //extract id from validated id by zod
-  const data = await db.marathon.findUnique({
-    where: { id },
-  });
+  const [data, totalParticiants] = await Promise.all([
+    db.marathon.findUnique({
+      where: { id },
+    }),
+    db.marathonUser.count({
+      where: { marathonId: id },
+    }),
+  ]);
 
-  return data;
+  return { data, totalParticiants };
 };
 
 const createNew = async (info: createMarathonInputsTypes) => {
@@ -84,7 +89,6 @@ const updateOne = async (
 ) => {
   //extract id from validated id by zod
   const { id } = idObj;
-
 
   const updatedData = await db.marathon.update({
     where: { id: id },
