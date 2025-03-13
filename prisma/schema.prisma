@@ -200,15 +200,16 @@ model MarathonUser {
 // -------- BLOGS ---------- //
 model Blogs {
   id          String   @id @default(uuid())
-  adminId     String   @map("admin_id")
+  createdBy   String?  @map("created_by")
   title       String
   readTime    Int      @map("read_time")
   description String   @db.Text
   details     String   @db.Text
+  imagePath   String   @map("image_path")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  admin Admins @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  admin Admins? @relation(fields: [createdBy], references: [id], onDelete: SetNull)
 
   @@map("blogs")
 }

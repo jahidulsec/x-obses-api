@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
-import marathonService from "../../../../../lib/marathon/marathon";
+import otherService from "../../../../../lib/other/blog";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 import { notFoundError, serverError } from "../../../../../utils/errors";
 
@@ -9,21 +9,21 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = requiredIdSchema.parse(req.params);
 
     //get single item with validated id
-    const data = await marathonService.getSingle(validatedData);
+    const data = await otherService.getSingle(validatedData);
 
     if (!data) {
-      notFoundError("Marathon not found!");
+      notFoundError("Blog not found!");
     }
 
-    const deleted: any = await marathonService.deleteOne(validatedData);
+    const deleted: any = await otherService.deleteOne(validatedData);
 
     if (deleted == 0) {
-      serverError("Marathon is not deleted");
+      serverError("Blog is not deleted");
     }
 
     const responseData = {
       success: true,
-      message: "Marathon is deleted successfully!",
+      message: "Blog is deleted successfully!",
       data: data,
     };
 
@@ -37,4 +37,4 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { deleteOne as deleteMarathon };
+export { deleteOne as deleteBlog };

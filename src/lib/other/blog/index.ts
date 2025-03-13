@@ -1,21 +1,19 @@
 import db from "../../../db/db";
 import { requiredIdTypes } from "../../../schemas/required-id";
 import {
-  marathonsQueryInputTypes,
-  createMarathonInputsTypes,
-  updateMarathonInputTypes,
-} from "../../../schemas/marathon";
+  blogsQueryInputTypes,
+  createBlogInputsTypes,
+  updateBlogInputTypes,
+} from "../../../schemas/blog";
 
-const getMulti = async (queries: marathonsQueryInputTypes) => {
+const getMulti = async (queries: blogsQueryInputTypes) => {
   const size = queries?.size ?? 20;
   const page = queries?.page ?? 1;
   const sort = queries?.sort ?? "desc";
-  const type = queries?.type;
 
   const [data, count] = await Promise.all([
-    db.marathon.findMany({
+    db.blogs.findMany({
       where: {
-        type: type,
         title: {
           startsWith: queries.search || undefined,
         },
@@ -26,9 +24,8 @@ const getMulti = async (queries: marathonsQueryInputTypes) => {
         createdAt: sort,
       },
     }),
-    db.marathon.count({
+    db.blogs.count({
       where: {
-        type: type,
         title: {
           startsWith: queries.search || undefined,
         },
@@ -43,36 +40,18 @@ const getSingle = async (idObj: requiredIdTypes) => {
   const { id } = idObj;
 
   //extract id from validated id by zod
-  const data = await db.marathon.findUnique({
+  const data = await db.blogs.findUnique({
     where: { id },
   });
 
   return data;
 };
 
-const createNew = async (info: createMarathonInputsTypes) => {
-  const rewardsList = info.rewards.map((title) => ({
-    text: title,
-  }));
-
-  const data = await db.marathon.create({
+const createNew = async (info: createBlogInputsTypes) => {
+  const data = await db.blogs.create({
     data: {
-      title: info.title,
-      about: info.about,
-      startDate: info.startDate,
-      endDate: info.endDate,
-      description: info.description,
-      type: info.type,
-      imagePath: info.imagePath,
-      Rewards: {
-        createMany: {
-          data: rewardsList,
-        },
-      },
+      ...info,
     },
-    include: {
-      Rewards: true
-    }
   });
 
   return data;
@@ -80,14 +59,12 @@ const createNew = async (info: createMarathonInputsTypes) => {
 
 const updateOne = async (
   idObj: requiredIdTypes,
-  info: updateMarathonInputTypes
+  info: updateBlogInputTypes
 ) => {
   //extract id from validated id by zod
   const { id } = idObj;
 
-  console.log(info)
-
-  const updatedData = await db.marathon.update({
+  const updatedData = await db.blogs.update({
     where: { id: id },
     data: { ...info },
   });
@@ -98,7 +75,7 @@ const deleteOne = async (idObj: requiredIdTypes) => {
   //extract id from validated id by zod
   const { id } = idObj;
 
-  const deleted = await db.marathon.delete({
+  const deleted = await db.blogs.delete({
     where: { id: id },
   });
 

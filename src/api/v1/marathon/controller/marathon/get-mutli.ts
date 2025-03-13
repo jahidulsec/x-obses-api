@@ -13,7 +13,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
 
     const responseData = {
       success: true,
-      message: "Get user workout plan details successfully!",
+      message: "Get marathons successfully!",
       data: data.data,
       pagination: {
         ...paginate(data.page, data.size, data.count),

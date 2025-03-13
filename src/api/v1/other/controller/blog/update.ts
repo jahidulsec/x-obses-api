@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import { notFoundError, serverError } from "../../../../../utils/errors";
 import deleteImage from "../../../../../utils/delete-image";
 import upload from "../../../../../utils/upload";
-import { updateMarathonDTOSchema } from "../../../../../schemas/marathon";
-import marathonService from "../../../../../lib/marathon/marathon";
+import otherService from "../../../../../lib/other/blog";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
+import { updateBlogDTOSchema } from "../../../../../schemas/blog";
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
   let uploadedPhoto: string | null = null;
@@ -19,7 +19,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const formData = req.body;
 
     //check existing zone
-    const existingMarathon = await marathonService.getSingle(validatedId);
+    const existingMarathon = await otherService.getSingle(validatedId);
 
     if (!existingMarathon) {
       //send not found error if not exist
@@ -40,18 +40,18 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     //Validate incoming body data with defined schema
-    const validatedData = updateMarathonDTOSchema.parse(formData);
+    const validatedData = updateBlogDTOSchema.parse(formData);
 
     //update with validated data
-    const updated = await marathonService.updateOne(validatedId, validatedData);
+    const updated = await otherService.updateOne(validatedId, validatedData);
 
     if (!updated) {
-      serverError("User profile is not updated");
+      serverError("Blog is not updated");
     }
 
     const responseData = {
       success: true,
-      message: "User profile updated successfully!",
+      message: "Blog updated successfully!",
       data: updated,
     };
 
@@ -70,4 +70,4 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { update as updateMarathon };
+export { update as updateBlog };

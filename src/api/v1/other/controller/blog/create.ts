@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import deleteImage from "../../../../../utils/delete-image";
 import upload from "../../../../../utils/upload";
-import marathonService from "../../../../../lib/marathon/marathon";
-import { createMarathonDTOSchema } from "../../../../../schemas/marathon";
+import otherService from "../../../../../lib/other/blog";
+import { createBlogDTOSchema } from "../../../../../schemas/blog";
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   let uploadedPhoto: any;
@@ -18,14 +18,14 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     //Validate incoming body data with defined schema
-    const validatedData = createMarathonDTOSchema.parse(formData);
+    const validatedData = createBlogDTOSchema.parse(formData);
 
     //create new with validated data
-    const created = await marathonService.createNew(validatedData);
+    const created = await otherService.createNew(validatedData);
 
     const responseData = {
       success: true,
-      message: "New marathon created successfully!",
+      message: "New blog created successfully!",
       data: created,
     };
 
@@ -45,4 +45,4 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { create as createMarathon };
+export { create as createBlog };

@@ -99,9 +99,9 @@ const getUserWorkOutStats = async (
     },
     _sum: {
       calories: true,
-      distance: true,
+      distanceKm: true,
       steps: true,
-      duration: true,
+      durationMs: true,
     },
     _avg: {
       heartPts: true,

@@ -46,12 +46,12 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const updated = await marathonService.updateOne(validatedId, validatedData);
 
     if (!updated) {
-      serverError("User profile is not updated");
+      serverError("Marathon is not updated");
     }
 
     const responseData = {
       success: true,
-      message: "User profile updated successfully!",
+      message: "Marathon updated successfully!",
       data: updated,
     };
 

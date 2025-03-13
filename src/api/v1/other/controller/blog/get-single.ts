@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
-import marathonService from "../../../../../lib/marathon/marathon";
+import otherService from "../../../../../lib/other/blog";
 import { notFoundError } from "../../../../../utils/errors";
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,15 +9,15 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = requiredIdSchema.parse(req.params);
 
     //get single item with validated id
-    const data = await marathonService.getSingle(validatedData);
+    const data = await otherService.getSingle(validatedData);
 
     if (!data) {
-      notFoundError("Marathon not found!");
+      notFoundError("Blog not found!");
     }
 
     const responseData = {
       success: true,
-      message: "Get Marathon details successfully!",
+      message: "Get Blog details successfully!",
       data: data,
     };
 

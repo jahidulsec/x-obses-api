@@ -1,28 +1,25 @@
 import { z } from "zod";
 
-export const createMarathonDTOSchema = z.object({
+export const createBlogDTOSchema = z.object({
   title: z.string(),
   description: z.string(),
-  about: z.string(),
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date(),
-  rewards: z.array(z.string()),
-  imagePath: z.string().optional(),
-  type: z.enum(["onsite", "virtual"]),
+  details: z.string(),
+  imagePath: z.string(),
+  readTime: z.coerce.number(),
+  createdBy: z.string().optional(),
 });
 
-export const updateMarathonDTOSchema = createMarathonDTOSchema
+export const updateBlogDTOSchema = createBlogDTOSchema
   .omit({})
   .partial();
 
-export const marathonsQuerySchema = z.object({
+export const blogsQuerySchema = z.object({
   sort: z.enum(["asc", "desc"]).default("desc"),
-  type: z.enum(["onsite", "virtual"]).default('virtual').optional(),
   page: z.coerce.number().int().default(1),
   size: z.coerce.number().default(20),
   search: z.string().optional(),
 });
 
-export type createMarathonInputsTypes = z.infer<typeof createMarathonDTOSchema>;
-export type updateMarathonInputTypes = z.infer<typeof updateMarathonDTOSchema>;
-export type marathonsQueryInputTypes = z.infer<typeof marathonsQuerySchema>;
+export type createBlogInputsTypes = z.infer<typeof createBlogDTOSchema>;
+export type updateBlogInputTypes = z.infer<typeof updateBlogDTOSchema>;
+export type blogsQueryInputTypes = z.infer<typeof blogsQuerySchema>;
