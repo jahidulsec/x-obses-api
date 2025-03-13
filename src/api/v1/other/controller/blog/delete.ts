@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import otherService from "../../../../../lib/other/blog";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 import { notFoundError, serverError } from "../../../../../utils/errors";
+import deleteImage from "../../../../../utils/delete-image";
 
 const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -19,6 +20,11 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
 
     if (deleted == 0) {
       serverError("Blog is not deleted");
+    }
+
+    // delete previous image
+    if (data?.imagePath) {
+      deleteImage({ folder: "photos", image: data.imagePath });
     }
 
     const responseData = {

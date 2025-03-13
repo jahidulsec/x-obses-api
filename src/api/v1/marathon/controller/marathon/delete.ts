@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import marathonService from "../../../../../lib/marathon/marathon";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 import { notFoundError, serverError } from "../../../../../utils/errors";
+import deleteImage from "../../../../../utils/delete-image";
 
 const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -17,9 +18,16 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
 
     const deleted: any = await marathonService.deleteOne(validatedData);
 
+
     if (deleted == 0) {
       serverError("Marathon is not deleted");
     }
+
+    // delete previous image
+    if (data?.imagePath) {
+      deleteImage({ folder: "photos", image: data.imagePath });
+    }
+
 
     const responseData = {
       success: true,
