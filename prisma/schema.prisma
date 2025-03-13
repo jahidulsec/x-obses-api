@@ -42,7 +42,7 @@ model Users {
   address      String?        @db.VarChar(255)
   birth        DateTime?
   heightFt     Int?           @map("height_ft")
-  heightin     Int?           @map("height_in")
+  heightIn     Int?           @map("height_in")
   weight       Int?
   createdAt    DateTime       @default(now()) @map("created_at")
   updateAt     DateTime       @updatedAt @map("updated_at")
@@ -134,6 +134,7 @@ model Marathon {
   title       String
   description String       @db.Text
   about       String       @db.Text
+  distanceKm  Int
   location    String?
   startDate   DateTime     @map("start_date")
   endDate     DateTime     @map("end_date")

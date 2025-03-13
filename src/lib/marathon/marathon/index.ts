@@ -68,6 +68,7 @@ const createNew = async (info: createMarathonInputsTypes) => {
       endDate: info.endDate,
       description: info.description,
       type: info.type,
+      distanceKm: info.distanceKm,
       imagePath: info.imagePath,
       Rewards: {
         createMany: {

@@ -55,7 +55,7 @@ const createUserWorkoutPlan = async (
       badRequestError("You already have an schedule");
     }
 
-    if(!user?.heightFt || !user?.heightin) {
+    if(!user?.heightFt || !user?.heightIn) {
       badRequestError("Please enter your height in your profile")
     }
 
@@ -72,7 +72,7 @@ const createUserWorkoutPlan = async (
     const bmi = calculateBMI(
       user?.weight ?? 0,
       user?.heightFt ?? 0,
-      user?.heightin ?? 0
+      user?.heightIn ?? 0
     );
 
     validatedData.bmi = Number(bmi);
@@ -100,7 +100,7 @@ const createUserWorkoutPlan = async (
     const bmr = calculateBMR(
       validatedData.weightGoal as number,
       user?.heightFt as number,
-      user?.heightin as number,
+      user?.heightIn as number,
       user?.gender as gender,
       age
     );

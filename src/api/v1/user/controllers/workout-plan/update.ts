@@ -100,7 +100,7 @@ const updateUserWorkoutPlan = async (
           user?.weight ??
           0,
         user?.heightFt as number,
-        user?.heightin as number,
+        user?.heightIn as number,
         user?.gender as gender,
         age
       );

@@ -4,6 +4,7 @@ export const createMarathonDTOSchema = z.object({
   title: z.string(),
   description: z.string(),
   about: z.string(),
+  distanceKm: z.coerce.number(),
   location: z.string().optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),

@@ -5,7 +5,8 @@ import {
   unauthorizedError,
 } from "../../../../../utils/errors";
 import { updateMarathonUserDTOSchema } from "../../../../../schemas/marathon-user";
-import marathonService from "../../../../../lib/marathon/user";
+import marathonUserService from "../../../../../lib/marathon/user";
+import marathonService from "../../../../../lib/marathon/marathon";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,20 +19,38 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 
     const formData = req.body;
 
-    //check existing zone
-    const existingMarathonUser = await marathonService.getSingle(validatedId);
+    //check existing marathon user
+    const existingMarathonUser = await marathonUserService.getSingle(
+      validatedId
+    );
 
     if (!existingMarathonUser) {
       //send not found error if not exist
-      notFoundError("Marathon does not exist");
+      notFoundError("Marathon user does not exist");
     }
 
     if (!authUser || authUser.id !== existingMarathonUser?.userId) {
       unauthorizedError("Unauthorized");
     }
 
+    //check existing marathon
+    const existingMarathon = await marathonService.getSingle({
+      id: existingMarathonUser?.marathonId as string,
+    });
+
+    if (!existingMarathon) {
+      //send not found error if not exist
+      notFoundError("Marathon does not exist");
+    }
+
+
     //Validate incoming body data with defined schema
     const validatedData = updateMarathonUserDTOSchema.parse(formData);
+
+    // distance check
+    if((validatedData?.distanceKm ?? 0) > Number(existingMarathon.data?.distanceKm) ) {
+      validatedData.distanceKm = existingMarathon.data?.distanceKm
+    }
 
     //update with validated data
     const updated = await marathonService.updateOne(validatedId, validatedData);

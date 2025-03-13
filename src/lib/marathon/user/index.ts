@@ -27,7 +27,7 @@ const getMulti = async (queries: marathonUsersQueryInputTypes) => {
           distanceKm: sort,
         },
         {
-          durationMs: sort,
+          durationMs: 'asc',
         },
       ],
     }),
