@@ -1,20 +1,33 @@
 import { Router } from "express";
 import controllers from "../../api/v1/marathon";
 import { verifyToken } from "../../middlewares/verify-token";
+import { verifyRoles } from "../../middlewares/verify-roles";
 
 const router = Router();
 
 // marathon
 router
   .route("/marathon")
-  .post(controllers.createMarathon)
+  .post(
+    verifyToken,
+    verifyRoles("admin", "superadmin"),
+    controllers.createMarathon
+  )
   .get(controllers.getMulti);
 
 router
   .route("/marathon/:id")
-  .patch(controllers.updateMarathon)
+  .patch(
+    verifyToken,
+    verifyRoles("admin", "superadmin"),
+    controllers.updateMarathon
+  )
   .get(controllers.getSingle)
-  .delete(controllers.deleteMarathon);
+  .delete(
+    verifyToken,
+    verifyRoles("admin", "superadmin"),
+    controllers.deleteMarathon
+  );
 
 // marathon user
 router
