@@ -4,7 +4,7 @@ export const createAdminDTOSchema = z.object({
   name: z.string(),
   username: z.string(),
   password: z.string(),
-  roles: z.enum(["admin, superadmin"]),
+  role: z.enum(["admin", "superadmin"]),
 });
 
 export const adminLoginDTOSchema = z.object({

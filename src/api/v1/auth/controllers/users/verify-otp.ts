@@ -50,7 +50,7 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     } else {
       // create access token
       accessToken = jwt.sign(
-        { id: existingOtpProfile?.userId },
+        { id: existingOtpProfile?.userId, type: "access" },
         process.env.ACCESS_TOKEN_SECRET_KEY as string
       );
     }

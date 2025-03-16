@@ -33,7 +33,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     //  create access token
     const accessToken = jwt.sign(
-      { id: admin?.id },
+      { id: admin?.id, role: admin?.role, type: "access" },
       process.env.ACCESS_TOKEN_SECRET_KEY as string
     );
 

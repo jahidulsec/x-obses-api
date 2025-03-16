@@ -1,7 +1,7 @@
 export interface AuthUser {
     id: string;
     name?: string;
-    roles?: string[];
+    role?: string;
     mobile?: string;
     iat: number;
   }

@@ -5,6 +5,7 @@ import {
   updateAdminInputTypes,
   adminsQueryInputTypes,
 } from "../../schemas/admin";
+import { $Enums } from "@prisma/client";
 
 const getMulti = async (queries: adminsQueryInputTypes) => {
   const size = queries?.size ?? 20;
@@ -17,6 +18,14 @@ const getMulti = async (queries: adminsQueryInputTypes) => {
         name: {
           startsWith: queries.search || undefined,
         },
+      },
+      select: {
+        name: true,
+        username: true,
+        id: true,
+        role: true,
+        createdAt: true,
+        updateAt: true,
       },
       take: size,
       skip: size * (page - 1),
@@ -59,7 +68,10 @@ const getSingleByUsername = async (username: string) => {
 const createNew = async (info: createAdminInputsTypes) => {
   const data = await db.admins.create({
     data: {
-      ...info,
+      name: info.name,
+      username: info.username,
+      password: info.password,
+      role: info.role as $Enums.AdminRoles
     },
   });
 
@@ -75,7 +87,7 @@ const updateOne = async (
 
   const updatedData = await db.admins.update({
     where: { id: id },
-    data: { ...info },
+    data: { ...info, role: info.role as $Enums.AdminRoles },
   });
   return updatedData;
 };
