@@ -8,4 +8,8 @@ router.post("/users/login", controllers.login);
 router.post("/users/sign-up", controllers.signUp);
 router.post("/users/verify-otp/:id", controllers.verifyOtp);
 
+// admin
+router.post("/admins/login", controllers.loginAdmin);
+
+
 export { router as authRoutes };
