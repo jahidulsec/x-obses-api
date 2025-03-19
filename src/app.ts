@@ -21,7 +21,7 @@ app.use(express.json());
 
 // api endpoints
 app.get("/", (req, res) => {
-  res.send("wow");
+  res.send("X-obese APP");
 });
 
 app.use("/api", router);

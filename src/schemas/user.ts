@@ -9,9 +9,9 @@ export const createUserDTOSchema = z.object({
   image: z.string().optional(),
   birth: z.coerce.date().optional(),
   address: z.string().optional(),
-  heightFt: z.number().optional(),
-  heightIn: z.number().optional(),
-  weight: z.number().optional(),
+  heightFt: z.coerce.number().optional(),
+  heightIn: z.coerce.number().optional(),
+  weight: z.coerce.number().optional(),
 });
 
 export const updateUserDTOSchema = createUserDTOSchema.omit({}).partial();
