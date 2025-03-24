@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import { createLoginDTOSchema } from "../../../../../schemas/user-login";
 import authService from "../../../../../lib/auth/users";
 import db from "../../../../../db/db";
-import { badRequestError, notFoundError, serverError } from "../../../../../utils/errors";
+import { badRequestError, serverError } from "../../../../../utils/errors";
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {

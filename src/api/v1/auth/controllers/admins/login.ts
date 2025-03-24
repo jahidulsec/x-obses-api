@@ -4,6 +4,11 @@ import adminService from "../../../../../lib/admin";
 import { badRequestError, notFoundError } from "../../../../../utils/errors";
 import { isValidPassword } from "../../../../../utils/password";
 import * as jwt from "jsonwebtoken";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../../../../../utils/token";
+import { addMinutesToDate } from "../../../../../utils/otp";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -32,10 +37,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     //  create access token
-    const accessToken = jwt.sign(
-      { id: admin?.id, role: admin?.role, type: "access" },
-      process.env.ACCESS_TOKEN_SECRET_KEY as string
+    const accessToken = generateAccessToken(
+      admin?.id as string,
+      admin?.role as string
     );
+    const refreshToken = generateRefreshToken(admin?.id as string);
 
     const responseData = {
       success: true,
@@ -46,7 +52,15 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     //send success response
-    res.status(201).json(responseData);
+    res
+      .status(200)
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        // secure: ,
+        sameSite: "lax",
+        expires: addMinutesToDate(new Date(), 24 * 60), // for 1 day
+      })
+      .json(responseData);
   } catch (error) {
     console.log("ERROR : ", error);
 

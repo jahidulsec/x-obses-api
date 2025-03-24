@@ -4,8 +4,12 @@ import { createOtpDtoSchema } from "../../../../../schemas/user-login";
 import authService from "../../../../../lib/auth/users";
 import { badRequestError, notFoundError } from "../../../../../utils/errors";
 import { $Enums } from "@prisma/client";
-import { verifyOtpTime } from "../../../../../utils/otp";
+import { addMinutesToDate, verifyOtpTime } from "../../../../../utils/otp";
 import * as jwt from "jsonwebtoken";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../../../../../utils/token";
 
 const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -37,22 +41,22 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     let accessToken: string = "";
+    let refreshToken: string = "";
 
     //  create user and access token
     if (validatedData.type === "signup") {
       const user = await authService.createUser({
         mobile: existingOtpProfile?.mobile as string,
       });
-      accessToken = jwt.sign(
-        { id: user.id },
-        process.env.ACCESS_TOKEN_SECRET_KEY as string
-      );
+      accessToken = generateAccessToken(user.id, "user");
+      refreshToken = generateRefreshToken(user?.id as string);
     } else {
       // create access token
-      accessToken = jwt.sign(
-        { id: existingOtpProfile?.userId, type: "access" },
-        process.env.ACCESS_TOKEN_SECRET_KEY as string
+      accessToken = generateAccessToken(
+        existingOtpProfile?.userId as string,
+        "user"
       );
+      refreshToken = generateRefreshToken(existingOtpProfile?.userId as string);
     }
 
     // delete otp
@@ -67,7 +71,15 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     //send success response
-    res.status(201).json(responseData);
+    res
+      .status(200)
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        // secure: ,
+        sameSite: "lax",
+        expires: addMinutesToDate(new Date(), 24 * 60), // for 1 day
+      })
+      .json(responseData);
   } catch (error) {
     console.log("ERROR : ", error);
 

@@ -3,6 +3,7 @@ import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
 import { errorHandler } from "./middlewares/error-handler";
+import cookieParser from "cookie-parser";
 import router from "./routes";
 
 // config();
@@ -18,6 +19,8 @@ const publicFolderUploads = path.join(__dirname, '../uploads/photos');
 app.use('/uploads/photos', express.static(publicFolderUploads));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
+
 
 // api endpoints
 app.get("/", (req, res) => {

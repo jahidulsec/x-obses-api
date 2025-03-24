@@ -8,11 +8,13 @@ Backend: ExpressJS, Prisma ORM, TypeScript
 
 Create `.env` file from `.env.example` file.
 
-To generate `ACCESS_TOKEN_SECRET_KEY` key,
+To generate `ACCESS_TOKEN_SECRET` key,
 
 ```bash
 openssl rand -base64 32
 ```
+
+To initailize project, run
 
 ```bash
 npm install

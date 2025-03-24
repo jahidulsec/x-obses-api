@@ -47,7 +47,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     //send success response
-    res.status(201).json(responseData);
+    res.status(200).json(responseData);
   } catch (error) {
     console.log("ERROR : ", error);
 
