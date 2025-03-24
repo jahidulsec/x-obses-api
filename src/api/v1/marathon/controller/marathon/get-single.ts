@@ -20,6 +20,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
       message: "Get Marathon details successfully!",
       data: data.data,
       totalParticiants: data.totalParticiants,
+      particiants: data.participants
     };
 
     //send success response
