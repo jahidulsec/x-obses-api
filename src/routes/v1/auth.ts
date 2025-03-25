@@ -12,7 +12,7 @@ router.post("/users/verify-otp/:id", controllers.verifyOtp);
 router.post("/admins/login", controllers.loginAdmin);
 
 // token
-router.get("/token/admin", controllers.revokeAdminAccessToken);
-router.get("/token/user", controllers.revokeUserAccessToken);
+router.post("/token/admin", controllers.revokeAdminAccessToken);
+router.post("/token/user", controllers.revokeUserAccessToken);
 
 export { router as authRoutes };
