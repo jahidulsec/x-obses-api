@@ -37,7 +37,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     const responseData = {
       success: true,
-      message: "OTP is sent to " + created.mobile,
+      message: "OTP is sent to " + validatedData.mobile,
       data: {
         id: created.id,
         userId: created.userId,
