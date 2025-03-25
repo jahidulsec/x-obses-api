@@ -18,9 +18,16 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "Get Marathon details successfully!",
-      data: data.data,
+      data: {
+        ...data.data,
+        ...(data.data?.imagePath && {
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            data.data.imagePath
+          }`,
+        }),
+      },
       totalParticiants: data.totalParticiants,
-      particiants: data.participants
+      particiants: data.participants,
     };
 
     //send success response

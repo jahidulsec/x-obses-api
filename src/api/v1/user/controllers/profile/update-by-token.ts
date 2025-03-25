@@ -59,7 +59,14 @@ async function updateOne(req: Request, res: Response, next: NextFunction) {
     const responseData = {
       success: true,
       message: "User profile updated successfully!",
-      data: updated,
+      data: {
+        ...updated,
+        ...(updated?.image && {
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            updated.image
+          }`,
+        }),
+      },
     };
 
     //send success response

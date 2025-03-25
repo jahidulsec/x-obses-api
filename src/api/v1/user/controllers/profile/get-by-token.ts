@@ -25,7 +25,12 @@ const getUserByToken = async (
     const responseData = {
       success: true,
       message: "Get user profile details successfully!",
-      data: data,
+      data: {
+        ...data,
+        ...(data?.image && {
+          imagePath: `${req.protocol}://${req.get('host')}/uploads/photos/${data.image}`
+        })
+      },
     };
 
     //send success response

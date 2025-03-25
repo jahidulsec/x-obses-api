@@ -11,10 +11,17 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     //get single item with validated id
     const data = await marathonService.getMulti(validatedQuery);
 
+    const modifiedData = data.data.map(item => {
+      return {
+        ...item,
+        imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${item.imagePath}`
+      }
+    })
+
     const responseData = {
       success: true,
       message: "Get marathons successfully!",
-      data: data.data,
+      data: modifiedData,
       pagination: {
         ...paginate(data.page, data.size, data.count),
       },
