@@ -15,6 +15,13 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
       notFoundError("Marathon not found!");
     }
 
+    const modifiedParticientsData = data.participants.map(item => {
+      return {
+        ...item.user,
+        imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${item.user.image}`
+      }
+    })
+
     const responseData = {
       success: true,
       message: "Get Marathon details successfully!",
@@ -27,7 +34,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
         }),
       },
       totalParticiants: data.totalParticiants,
-      particiants: data.participants,
+      particiants: modifiedParticientsData,
     };
 
     //send success response
