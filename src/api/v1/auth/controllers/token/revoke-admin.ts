@@ -3,10 +3,8 @@ import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
 import userService from "../../../../../lib/admin";
 import {
   generateAccessToken,
-  generateRefreshToken,
   validateRefreshToken,
 } from "../../../../../utils/token";
-import { addMinutesToDate } from "../../../../../utils/otp";
 
 const revoke = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,8 +33,6 @@ const revoke = async (req: Request, res: Response, next: NextFunction) => {
       user?.role as string
     );
 
-    const newRefreshToken = generateRefreshToken(user?.id as string);
-
     const responseData = {
       success: true,
       message: `Token revoke successful`,
@@ -47,12 +43,6 @@ const revoke = async (req: Request, res: Response, next: NextFunction) => {
 
     res
       .status(200)
-      .cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        // secure: ,
-        sameSite: "lax",
-        expires: addMinutesToDate(new Date(), 24 * 60), // for 1 day
-      })
       .json(responseData);
   } catch (error) {
     console.log("ERROR : ", error);

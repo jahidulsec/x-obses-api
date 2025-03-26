@@ -3,7 +3,6 @@ import { adminLoginDTOSchema } from "../../../../../schemas/admin";
 import adminService from "../../../../../lib/admin";
 import { badRequestError, notFoundError } from "../../../../../utils/errors";
 import { isValidPassword } from "../../../../../utils/password";
-import * as jwt from "jsonwebtoken";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -51,13 +50,15 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       },
     };
 
+    console.log("ok")
+
     //send success response
     res
       .status(200)
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        // secure: ,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         expires: addMinutesToDate(new Date(), 24 * 60), // for 1 day
       })
       .json(responseData);

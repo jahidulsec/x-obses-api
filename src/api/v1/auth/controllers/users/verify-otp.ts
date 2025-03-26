@@ -75,8 +75,8 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
       .status(200)
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        // secure: ,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         expires: addMinutesToDate(new Date(), 24 * 60), // for 1 day
       })
       .json(responseData);
