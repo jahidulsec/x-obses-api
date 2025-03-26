@@ -12,7 +12,7 @@ export function verifyToken(
     const authHeader = request.headers["authorization"];
 
     if (!authHeader?.startsWith("Bearer ")) {
-      forbiddenError("Invalid token");
+      unauthorizedError("Invalid token");
     }
 
     const token = authHeader && authHeader?.split(" ")[1]; // token example: Bearer <TOKEN>
@@ -25,7 +25,7 @@ export function verifyToken(
       token as string,
       process.env.ACCESS_TOKEN_SECRET as string,
       (err, user) => {
-        if (err) forbiddenError("Invalid token");
+        if (err) unauthorizedError("Invalid token");
 
         request.user = user as AuthUser;
         next();
