@@ -52,7 +52,14 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "Blog updated successfully!",
-      data: updated,
+      data: {
+        ...updated,
+        ...(updated.imagePath && {
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            updated?.imagePath
+          }`,
+        }),
+      },
     };
 
     //send success response

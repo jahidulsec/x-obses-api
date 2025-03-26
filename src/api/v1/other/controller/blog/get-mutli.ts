@@ -11,10 +11,21 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     //get single item with validated id
     const data = await otherService.getMulti(validatedQuery);
 
+    const modifiedData = data.data.map((item) => {
+      return {
+        ...item,
+        ...(item.imagePath && {
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            item.imagePath
+          }`,
+        }),
+      };
+    });
+
     const responseData = {
       success: true,
       message: "Get blogs successfully!",
-      data: data.data,
+      data: modifiedData,
       pagination: {
         ...paginate(data.page, data.size, data.count),
       },

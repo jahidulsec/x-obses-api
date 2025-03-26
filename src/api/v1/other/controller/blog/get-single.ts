@@ -18,7 +18,14 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "Get Blog details successfully!",
-      data: data,
+      data: {
+        ...data,
+        ...(data?.imagePath && {
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            data?.imagePath
+          }`,
+        }),
+      },
     };
 
     //send success response

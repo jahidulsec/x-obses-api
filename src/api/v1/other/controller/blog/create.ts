@@ -26,7 +26,14 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "New blog created successfully!",
-      data: created,
+      data: {
+        ...created,
+        ...(created.imagePath && {
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            created?.imagePath
+          }`,
+        }),
+      },
     };
 
     //send success response
