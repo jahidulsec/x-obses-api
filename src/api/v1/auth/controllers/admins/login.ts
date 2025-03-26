@@ -47,6 +47,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       message: "Admin is successfully logged in",
       data: {
         accessToken: accessToken,
+        refreshToken: refreshToken
       },
     };
 
@@ -55,12 +56,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     //send success response
     res
       .status(200)
-      .cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: process.env.SSL_STATUS === "1",
-        sameSite: process.env.SSL_STATUS === "1" ? "none" : "lax",
-        expires: addMinutesToDate(new Date(), 24 * 60), // for 1 day
-      })
       .json(responseData);
   } catch (error) {
     console.log("ERROR : ", error);

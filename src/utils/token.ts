@@ -16,7 +16,7 @@ const generateRefreshToken = (userId: string) => {
     { id: userId, type: "refresh" },
     process.env.REFRESH_TOKEN_SECRET as string,
     {
-      expiresIn: "1d",
+      expiresIn: "7d",
     }
   );
 };

@@ -9,7 +9,8 @@ import {
 const revoke = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // get refresh token from cookie
-    const refreshToken = req?.cookies?.refreshToken ?? "";
+    const refreshToken = req.body["refreshToken"];
+
 
     // validate token
     if (!refreshToken) {
