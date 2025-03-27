@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 import marathonService from "../../../../../lib/marathon/user";
-import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
+import { forbiddenError, notFoundError, unauthorizedError } from "../../../../../utils/errors";
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -11,10 +11,6 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     //Validate incoming body data with defined schema
     const validatedData = requiredIdSchema.parse(req.params);
 
-    if (!authUser) {
-      unauthorizedError("Unauthorized");
-    }
-
     //get single item with validated id
     const data = await marathonService.getSingle(validatedData);
 
@@ -23,7 +19,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (authUser?.id !== data?.userId) {
-      unauthorizedError("Unauthorized");
+      forbiddenError("Unauthorized");
     }
 
     const responseData = {

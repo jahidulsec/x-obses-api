@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import marathonService from "../../../../../lib/marathon/user";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 import {
+  forbiddenError,
   notFoundError,
   serverError,
   unauthorizedError,
@@ -15,15 +16,11 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     // get user id from token
     const authUser = req.user;
 
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
-
     //get single item with validated id
     const data = await marathonService.getSingle(validatedData);
 
     if (!authUser || authUser.id !== data?.userId) {
-      unauthorizedError("Unauthorized");
+      forbiddenError("Unauthorized");
     }
 
     if (!data) {

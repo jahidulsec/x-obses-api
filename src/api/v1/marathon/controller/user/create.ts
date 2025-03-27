@@ -12,10 +12,6 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     // get user id from token
     const authUser = req.user;
 
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
-
     //check existing zone
     const existingUser = await userService.getSingle({
       id: authUser?.id as string,

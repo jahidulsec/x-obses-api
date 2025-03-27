@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout";
 import userProfileService from "../../../../../lib/user/profile";
 import { createWorkOutDTOSchema } from "../../../../../schemas/workout";
-import { unauthorizedError } from "../../../../../utils/errors";
 import {
   calculateCaloriesBurn,
   calculateHeartPts,
@@ -14,10 +13,6 @@ async function createNew(req: Request, res: Response, next: NextFunction) {
 
     // get user id from token
     const authUser = req.user;
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     // get user info by token
     const user = await userProfileService.getSingle({

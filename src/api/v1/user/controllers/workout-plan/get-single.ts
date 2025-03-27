@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
-import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
+import { notFoundError } from "../../../../../utils/errors";
 import userService from "../../../../../lib/user/workout-plan";
 
 const getUserWorkoutPlan = async (
@@ -12,9 +12,6 @@ const getUserWorkoutPlan = async (
     // get user id from token
     const authUser = req.user;
 
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     //Validate incoming body data with defined schema
     const validatedData = requiredIdSchema.parse(req.params);

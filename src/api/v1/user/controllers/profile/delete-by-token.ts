@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import {
   notFoundError,
   serverError,
-  unauthorizedError,
 } from "../../../../../utils/errors";
 import userService from "../../../../../lib/user/profile";
 import deleteImage from "../../../../../utils/delete-image";
@@ -11,10 +10,6 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
   try {
     // get user id from token
     const authUser = req.user;
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     //get single item with validated id
     const data = await userService.getSingle({ id: authUser?.id as string });

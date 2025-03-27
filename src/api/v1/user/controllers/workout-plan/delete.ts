@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
 import userService from "../../../../../lib/user/workout-plan";
-import { notFoundError, serverError, unauthorizedError } from "../../../../../utils/errors";
+import { notFoundError, serverError } from "../../../../../utils/errors";
 
 const deleteUserWorkoutPlan = async (
   req: Request,
@@ -15,9 +15,6 @@ const deleteUserWorkoutPlan = async (
     // get user id from token
     const authUser = req.user;
 
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     //get single item with validated id
     const data = await userService.getSingleByToken(

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
-import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
+import { forbiddenError, notFoundError } from "../../../../../utils/errors";
 import userService from "../../../../../lib/user/profile";
 import {
   generateAccessToken,
@@ -15,7 +15,7 @@ const revoke = async (req: Request, res: Response, next: NextFunction) => {
 
     // validate token
     if (!refreshToken) {
-      unauthorizedError("You are unauthorized for this action");
+      forbiddenError("You are forbidden for this action");
     }
 
     // get token info

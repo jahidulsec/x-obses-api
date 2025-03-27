@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout-plan";
 import {
   badRequestError,
-  unauthorizedError,
 } from "../../../../../utils/errors";
 import { createWorkOutPlanDTOSchema } from "../../../../../schemas/workout-plan";
 import userProfileService from "../../../../../lib/user/profile";
@@ -26,10 +25,6 @@ const createUserWorkoutPlan = async (
 
     // get user id from token
     const authUser = req.user;
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     // get user info by token
     const user = await userProfileService.getSingle({

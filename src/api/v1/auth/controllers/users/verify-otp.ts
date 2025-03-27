@@ -5,7 +5,6 @@ import authService from "../../../../../lib/auth/users";
 import { badRequestError, notFoundError } from "../../../../../utils/errors";
 import { $Enums } from "@prisma/client";
 import { addMinutesToDate, verifyOtpTime } from "../../../../../utils/otp";
-import * as jwt from "jsonwebtoken";
 import {
   generateAccessToken,
   generateRefreshToken,

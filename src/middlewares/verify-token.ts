@@ -12,13 +12,13 @@ export function verifyToken(
     const authHeader = request.headers["authorization"];
 
     if (!authHeader?.startsWith("Bearer ")) {
-      unauthorizedError("Invalid token");
+      forbiddenError("Invalid token");
     }
 
     const token = authHeader && authHeader?.split(" ")[1]; // token example: Bearer <TOKEN>
 
     if (token == null) {
-      unauthorizedError("Invalid token");
+      forbiddenError("Invalid token");
     }
 
     jwt.verify(

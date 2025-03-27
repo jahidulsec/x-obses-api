@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
-import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
+import { notFoundError } from "../../../../../utils/errors";
 import { workOutPlansQuerySchema } from "../../../../../schemas/workout-plan";
 import userService from "../../../../../lib/user/workout-plan";
 import { paginate } from "../../../../../utils/pagination";
@@ -12,10 +12,6 @@ const getUserWorkoutPlansByToken = async (
   try {
     // get user id from token
     const authUser = req.user;
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     // validate incoming body data with defined schema
     const validatedQuery = workOutPlansQuerySchema.parse(req.query);

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import {
+  forbiddenError,
   notFoundError,
   serverError,
   unauthorizedError,
@@ -29,8 +30,8 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
       notFoundError("Marathon user does not exist");
     }
 
-    if (!authUser || authUser.id !== existingMarathonUser?.userId) {
-      unauthorizedError("Unauthorized");
+    if (authUser?.id !== existingMarathonUser?.userId) {
+      forbiddenError("Unauthorized");
     }
 
     //check existing marathon

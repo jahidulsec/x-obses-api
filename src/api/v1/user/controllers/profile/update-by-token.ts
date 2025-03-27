@@ -4,7 +4,6 @@ import userService from "../../../../../lib/user/profile";
 import {
   notFoundError,
   serverError,
-  unauthorizedError,
 } from "../../../../../utils/errors";
 import upload from "../../../../../utils/upload";
 import deleteImage from "../../../../../utils/delete-image";
@@ -20,10 +19,6 @@ async function updateOne(req: Request, res: Response, next: NextFunction) {
 
     // get user id from token
     const authUser = req.user;
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     //check existing zone
     const existingUser = await userService.getSingle({

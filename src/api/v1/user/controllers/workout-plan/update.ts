@@ -4,7 +4,6 @@ import userProfileService from "../../../../../lib/user/profile";
 import {
   badRequestError,
   notFoundError,
-  unauthorizedError,
 } from "../../../../../utils/errors";
 import { updateWorkOutPlanDTOSchema } from "../../../../../schemas/workout-plan";
 import db from "../../../../../db/db";
@@ -27,11 +26,6 @@ const updateUserWorkoutPlan = async (
 
     // get user id from token
     const authUser = req.user;
-
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     //validate incoming params id
     const validatedId = requiredIdSchema.parse(req.params);

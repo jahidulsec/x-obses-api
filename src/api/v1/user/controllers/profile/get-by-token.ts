@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/profile";
-import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
+import { notFoundError } from "../../../../../utils/errors";
 
 const getUserByToken = async (
   req: Request,
@@ -10,10 +10,6 @@ const getUserByToken = async (
   try {
     // get user id from token
     const authUser = req.user;
-
-    if (!authUser) {
-      unauthorizedError("Invalid token");
-    }
 
     //get single item with validated id
     const data = await userService.getSingle({ id: `${authUser?.id}` });
