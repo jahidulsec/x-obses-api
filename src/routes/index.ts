@@ -13,6 +13,6 @@ router.use("/auth/v1", authRoutes);
 router.use("/user/v1", userRoutes);
 router.use("/marathon/v1", marathonRoutes);
 router.use("/other/v1", otherRoutes);
-router.use("/admin/v1", verifyToken, verifyRoles("superadmin"), adminRoutes);
+router.use("/admin/v1", verifyToken, adminRoutes);
 
 export default router;

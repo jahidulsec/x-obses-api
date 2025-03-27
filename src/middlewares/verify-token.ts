@@ -17,9 +17,9 @@ export function verifyToken(
 
     const token = authHeader && authHeader?.split(" ")[1]; // token example: Bearer <TOKEN>
 
-    if (token == null) {
-      forbiddenError("Invalid token");
-    }
+    // if (token == null) {
+    //   forbiddenError("Invalid token");
+    // }
 
     jwt.verify(
       token as string,
