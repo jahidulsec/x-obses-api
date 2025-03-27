@@ -5,6 +5,7 @@ import { deleteUserByToken } from "./profile/delete-by-token";
 // workout
 import { getUserWorkoutsByToken } from "./workout/get-all-by-token";
 import { createUserWorkout } from "./workout/create-by-token";
+import { createUserStep } from "./workout/create-steps";
 
 //workout plan
 import { createUserWorkoutPlan } from "./workout-plan/create";
@@ -23,5 +24,6 @@ export = {
   getUserWorkoutPlansByToken,
   updateUserWorkoutPlan,
   deleteUserWorkoutPlan,
-  getUserWorkoutPlan
+  getUserWorkoutPlan,
+  createUserStep,
 };

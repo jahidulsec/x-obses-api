@@ -5,7 +5,6 @@ export const createWorkOutDTOSchema = z.object({
   calories: z.coerce.number().optional(),
   distanceKm: z.coerce.number().optional(),
   heartPts: z.coerce.number().optional(),
-  steps: z.coerce.number().optional(),
   workoutTime: z.coerce.number().optional(),
   type: z.enum(["running", "walking", "cycling"]).optional(),
   durationMs: z.coerce.number().optional(),
@@ -19,9 +18,16 @@ export const workOutsQuerySchema = z.object({
   page: z.coerce.number().int().default(1),
   size: z.coerce.number().default(20),
   search: z.string().optional(),
-  view: z.enum(["daily", "weekly", "monthly"]).default('daily').optional(),
+  view: z.enum(["daily", "weekly", "monthly"]).default("daily").optional(),
 });
 
 export type createWorkOutInputsTypes = z.infer<typeof createWorkOutDTOSchema>;
 export type updateWorkOutInputTypes = z.infer<typeof updateWorkOutDTOSchema>;
 export type workOutsQueryInputTypes = z.infer<typeof workOutsQuerySchema>;
+
+export const createStepsDTOSchema = z.object({
+  userId: z.string(),
+  steps: z.coerce.number(),
+});
+
+export type createStepsInputsTypes = z.infer<typeof createStepsDTOSchema>;

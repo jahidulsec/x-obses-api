@@ -19,6 +19,8 @@ router
   .get(verifyToken, controllers.getUserWorkoutsByToken)
   .post(verifyToken, controllers.createUserWorkout);
 
+router.post("/workout/steps", verifyToken, controllers.createUserStep);
+
 // ---------- WORKOUT PLAN -------------- //
 router
   .route("/workout/plan")

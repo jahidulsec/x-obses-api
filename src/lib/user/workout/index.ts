@@ -1,6 +1,7 @@
 import db from "../../../db/db";
 import { requiredIdTypes } from "../../../schemas/required-id";
 import {
+  createStepsInputsTypes,
   createWorkOutInputsTypes,
   updateWorkOutInputTypes,
   workOutsQueryInputTypes,
@@ -89,30 +90,53 @@ const getUserWorkOutStats = async (
       break;
   }
 
-  const data = await db.workout.aggregate({
-    where: {
-      userId: id,
-      createdAt: {
-        gt: startDate,
-        lte: now,
+  const [data, steps] = await Promise.all([
+    db.workout.aggregate({
+      where: {
+        userId: id,
+        createdAt: {
+          gt: startDate,
+          lte: now,
+        },
       },
-    },
-    _sum: {
-      calories: true,
-      distanceKm: true,
-      steps: true,
-      durationMs: true,
-    },
-    _avg: {
-      heartPts: true,
-    },
-  });
+      _sum: {
+        calories: true,
+        distanceKm: true,
+        durationMs: true,
+      },
+      _avg: {
+        heartPts: true,
+      },
+    }),
+    db.steps.aggregate({
+      where: {
+        userId: id,
+        createdAt: {
+          gt: startDate,
+          lte: now,
+        },
+      },
+      _sum: {
+        steps: true,
+      },
+    }),
+  ]);
 
-  return { ...data._avg, ...data._sum };
+  return { ...data._avg, ...data._sum, ...steps._sum };
 };
 
 const createNew = async (info: createWorkOutInputsTypes) => {
   const data = await db.workout.create({
+    data: {
+      ...info,
+    },
+  });
+
+  return data;
+};
+
+const createNewSteps = async (info: createStepsInputsTypes) => {
+  const data = await db.steps.create({
     data: {
       ...info,
     },
@@ -153,4 +177,5 @@ export = {
   updateOne,
   deleteOne,
   getUserWorkOutStats,
+  createNewSteps,
 };

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout";
 import userProfileService from "../../../../../lib/user/profile";
-import { createWorkOutDTOSchema } from "../../../../../schemas/workout";
+import { createStepsDTOSchema } from "../../../../../schemas/workout";
 import {
   calculateCaloriesBurn,
   calculateHeartPts,
@@ -23,27 +23,14 @@ async function createNew(req: Request, res: Response, next: NextFunction) {
     formData["userId"] = authUser?.id as string;
 
     //Validate incoming body data with defined schema
-    const validatedData = createWorkOutDTOSchema.parse(formData);
-
-    // calculate heart pts
-    validatedData.heartPts = calculateHeartPts(
-      validatedData.durationMs ?? 0,
-      validatedData.type
-    );
-
-    // calculate calories burn in kCal
-    validatedData.calories = calculateCaloriesBurn(
-      validatedData.durationMs ?? 0,
-      user?.weight ?? 0,
-      validatedData.type
-    );
+    const validatedData = createStepsDTOSchema.parse(formData);
 
     //create new with validated data
-    const created = await userService.createNew(validatedData);
+    const created = await userService.createNewSteps(validatedData);
 
     const responseData = {
       success: true,
-      message: "New user workout added successfully!",
+      message: "New user steps added successfully!",
       data: created,
     };
 
@@ -57,4 +44,4 @@ async function createNew(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { createNew as createUserWorkout };
+export { createNew as createUserStep };
