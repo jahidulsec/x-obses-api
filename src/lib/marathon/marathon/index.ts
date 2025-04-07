@@ -167,7 +167,7 @@ const getSingleByUserId = async (idObj: requiredIdTypes, userId: string) => {
 };
 
 const createNew = async (info: createMarathonInputsTypes) => {
-  const rewardsList = info.rewards.map((title) => ({
+  const rewardsList = (info.rewards ?? []).map((title) => ({
     text: title,
   }));
 

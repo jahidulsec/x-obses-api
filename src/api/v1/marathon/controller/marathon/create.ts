@@ -9,6 +9,9 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   let uploadedPhoto: any;
 
   try {
+    // get auth user
+    const authUser = req.user;
+
     uploadedPhoto = await upload.uploadPhoto(req, res, "imagePath");
 
     const formData = req.body;
@@ -20,6 +23,12 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
     //Validate incoming body data with defined schema
     const validatedData = createMarathonDTOSchema.parse(formData);
+
+    // create list of reward from form data
+    validatedData.rewards = validatedData.reward.split(";");
+
+    // add admin info
+    validatedData.createdBy = authUser?.id ?? "";
 
     if (validatedData.type === "onsite" && !validatedData.location) {
       badRequestError("Location required for onsite marathon");
@@ -33,10 +42,13 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "New marathon created successfully!",
-      data: {...created,
+      data: {
+        ...created,
         ...(created?.imagePath && {
-          imagePath: `${req.protocol}://${req.get('host')}/uploads/photos/${created.imagePath}`
-        })
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            created.imagePath
+          }`,
+        }),
       },
     };
 
