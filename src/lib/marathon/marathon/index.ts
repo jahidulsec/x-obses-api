@@ -39,6 +39,52 @@ const getMulti = async (queries: marathonsQueryInputTypes) => {
   return { data, count, page, size };
 };
 
+const getMultiByUserId = async (
+  queries: marathonsQueryInputTypes,
+  userId: string
+) => {
+  const size = queries?.size ?? 20;
+  const page = queries?.page ?? 1;
+  const sort = queries?.sort ?? "desc";
+  const type = queries?.type;
+
+  const [data, count] = await Promise.all([
+    db.marathon.findMany({
+      where: {
+        type: type,
+        title: {
+          startsWith: queries.search || undefined,
+        },
+        MarathonUser: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      take: size,
+      skip: size * (page - 1),
+      orderBy: {
+        createdAt: sort,
+      },
+    }),
+    db.marathon.count({
+      where: {
+        type: type,
+        title: {
+          startsWith: queries.search || undefined,
+        },
+        MarathonUser: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    }),
+  ]);
+
+  return { data, count, page, size };
+};
+
 const getSingle = async (idObj: requiredIdTypes) => {
   const { id } = idObj;
 
@@ -63,8 +109,52 @@ const getSingle = async (idObj: requiredIdTypes) => {
             id: true,
             fullName: true,
             image: true,
-          }
-        }
+          },
+        },
+      },
+      take: 3,
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+  ]);
+
+  return { data, totalParticiants, participants };
+};
+
+const getSingleByUserId = async (idObj: requiredIdTypes, userId: string) => {
+  const { id } = idObj;
+
+  //extract id from validated id by zod
+  const [data, totalParticiants, participants] = await Promise.all([
+    db.marathon.findUnique({
+      where: {
+        id: id,
+        MarathonUser: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: {
+        Rewards: true,
+      },
+    }),
+    db.marathonUser.count({
+      where: { marathonId: id },
+    }),
+    db.marathonUser.findMany({
+      where: {
+        marathonId: id,
+      },
+      select: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            image: true,
+          },
+        },
       },
       take: 3,
       orderBy: {
@@ -146,7 +236,9 @@ const deleteOne = async (idObj: requiredIdTypes) => {
 
 export = {
   getMulti,
+  getMultiByUserId,
   getSingle,
+  getSingleByUserId,
   createNew,
   updateOne,
   deleteOne,

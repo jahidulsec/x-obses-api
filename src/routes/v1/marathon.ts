@@ -13,7 +13,7 @@ router
     verifyRoles("admin", "superadmin"),
     controllers.createMarathon
   )
-  .get(controllers.getMulti);
+  .get(verifyToken, controllers.getMulti);
 
 router
   .route("/marathon/:id")
@@ -22,7 +22,7 @@ router
     verifyRoles("admin", "superadmin"),
     controllers.updateMarathon
   )
-  .get(controllers.getSingle)
+  .get(verifyToken, controllers.getSingle)
   .delete(
     verifyToken,
     verifyRoles("admin", "superadmin"),
