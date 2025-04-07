@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const createMarathonDTOSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  about: z.string(),
-  distanceKm: z.coerce.number(),
+  title: z.string().min(3),
+  description: z.string().min(3),
+  about: z.string().min(3),
+  distanceKm: z.coerce.number().min(0.001),
   location: z.string().optional(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),

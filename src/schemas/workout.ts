@@ -27,7 +27,8 @@ export type workOutsQueryInputTypes = z.infer<typeof workOutsQuerySchema>;
 
 export const createStepsDTOSchema = z.object({
   userId: z.string(),
-  steps: z.coerce.number(),
+  steps: z.coerce.number().min(1),
+  createdAt: z.coerce.date(),
 });
 
 export type createStepsInputsTypes = z.infer<typeof createStepsDTOSchema>;
