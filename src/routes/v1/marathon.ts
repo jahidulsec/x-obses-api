@@ -31,6 +31,14 @@ router
 
 router.get("/stats/marathon", controllers.getMarathonStats);
 
+// delete reward
+router.delete(
+  "/marathon/reward/:id",
+  verifyToken,
+  verifyRoles("admin", "superadmin"),
+  controllers.deleteReward
+);
+
 // marathon user
 router
   .route("/user")

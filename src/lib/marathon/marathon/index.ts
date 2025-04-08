@@ -283,6 +283,14 @@ const deleteOne = async (idObj: requiredIdTypes) => {
   return deleted;
 };
 
+const deleteReward = async (id: string) => {
+  const deleted = await db.rewards.delete({
+    where: { id: id },
+  });
+
+  return deleted;
+};
+
 export = {
   getMulti,
   getMultiByUserId,
@@ -292,4 +300,5 @@ export = {
   updateOne,
   deleteOne,
   getStats,
+  deleteReward,
 };
