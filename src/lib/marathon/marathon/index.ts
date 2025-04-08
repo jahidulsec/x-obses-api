@@ -5,12 +5,14 @@ import {
   createMarathonInputsTypes,
   updateMarathonInputTypes,
 } from "../../../schemas/marathon";
+import { $Enums } from "@prisma/client";
 
 const getMulti = async (queries: marathonsQueryInputTypes) => {
   const size = queries?.size ?? 20;
   const page = queries?.page ?? 1;
   const sort = queries?.sort ?? "desc";
   const type = queries?.type;
+  const active = queries.active ?? false;
 
   const [data, count] = await Promise.all([
     db.marathon.findMany({
@@ -19,6 +21,11 @@ const getMulti = async (queries: marathonsQueryInputTypes) => {
         title: {
           startsWith: queries.search || undefined,
         },
+        ...(active === "1" && {
+          endDate: {
+            gt: new Date(),
+          },
+        }),
       },
       take: size,
       skip: size * (page - 1),
@@ -32,6 +39,11 @@ const getMulti = async (queries: marathonsQueryInputTypes) => {
         title: {
           startsWith: queries.search || undefined,
         },
+        ...(active === "1" && {
+          endDate: {
+            gt: new Date(),
+          },
+        }),
       },
     }),
   ]);
@@ -166,6 +178,22 @@ const getSingleByUserId = async (idObj: requiredIdTypes, userId: string) => {
   return { data, totalParticiants, participants };
 };
 
+const getStats = async (type?: $Enums.MarathonType) => {
+  const data = await db.marathon.aggregate({
+    where: {
+      endDate: {
+        gt: new Date(),
+      },
+      type: type ?? undefined,
+    },
+    _count: {
+      id: true,
+    },
+  });
+
+  return data._count.id;
+};
+
 const createNew = async (info: createMarathonInputsTypes) => {
   const rewardsList = (info.rewards ?? []).map((title) => ({
     text: title,
@@ -242,4 +270,5 @@ export = {
   createNew,
   updateOne,
   deleteOne,
+  getStats,
 };

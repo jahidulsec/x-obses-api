@@ -29,6 +29,8 @@ router
     controllers.deleteMarathon
   );
 
+router.get("/stats/marathon", controllers.getMarathonStats);
+
 // marathon user
 router
   .route("/user")

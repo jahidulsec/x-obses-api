@@ -4,6 +4,7 @@ import { updateMarathon } from "./marathon/update";
 import { deleteMarathon } from "./marathon/delete";
 import { getMulti } from "./marathon/get-mutli";
 import { getSingle } from "./marathon/get-single";
+import { getMarathonStats } from "./marathon/get-stats";
 
 // marathon user
 import { createMarathonUser } from "./user/create";
@@ -16,6 +17,7 @@ export = {
   createMarathon,
   updateMarathon,
   deleteMarathon,
+  getMarathonStats,
   getMulti,
   getSingle,
   getMarathonUsers,

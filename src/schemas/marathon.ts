@@ -21,7 +21,8 @@ export const updateMarathonDTOSchema = createMarathonDTOSchema
 
 export const marathonsQuerySchema = z.object({
   sort: z.enum(["asc", "desc"]).default("desc"),
-  type: z.enum(["onsite", "virtual"]).default('virtual').optional(),
+  type: z.enum(["onsite", "virtual"]).optional(),
+  active: z.enum(["0", "1"]).optional(),
   page: z.coerce.number().int().default(1),
   size: z.coerce.number().default(20),
   search: z.string().optional(),
