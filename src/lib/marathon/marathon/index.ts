@@ -27,6 +27,7 @@ const getMulti = async (queries: marathonsQueryInputTypes) => {
           },
         }),
       },
+      include: { Rewards: true },
       take: size,
       skip: size * (page - 1),
       orderBy: {
@@ -59,6 +60,7 @@ const getMultiByUserId = async (
   const page = queries?.page ?? 1;
   const sort = queries?.sort ?? "desc";
   const type = queries?.type;
+  const active = queries.active ?? false;
 
   const [data, count] = await Promise.all([
     db.marathon.findMany({
@@ -67,6 +69,11 @@ const getMultiByUserId = async (
         title: {
           startsWith: queries.search || undefined,
         },
+        ...(active === "1" && {
+          endDate: {
+            gt: new Date(),
+          },
+        }),
         MarathonUser: {
           some: {
             userId: userId,
@@ -85,6 +92,11 @@ const getMultiByUserId = async (
         title: {
           startsWith: queries.search || undefined,
         },
+        ...(active === "1" && {
+          endDate: {
+            gt: new Date(),
+          },
+        }),
         MarathonUser: {
           some: {
             userId: userId,
@@ -230,16 +242,25 @@ const updateOne = async (
   //extract id from validated id by zod
   const { id } = idObj;
 
+  const rewardsList = (info.rewards ?? []).map((title) => ({
+    text: title,
+  }));
+
   const updatedData = await db.marathon.update({
     where: { id: id },
     data: {
-      ...info,
+      title: info.title,
+      about: info.about,
+      startDate: info.startDate,
+      endDate: info.endDate,
+      description: info.description,
+      type: info.type,
+      distanceKm: info.distanceKm,
+      imagePath: info.imagePath,
       ...(info.rewards && {
         Rewards: {
           createMany: {
-            data: info.rewards.map((title) => ({
-              text: title,
-            })),
+            data: rewardsList,
           },
         },
       }),

@@ -40,6 +40,11 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     //Validate incoming body data with defined schema
     const validatedData = updateMarathonDTOSchema.parse(formData);
 
+    // create list of reward from form data
+    if (validatedData.reward) {
+      validatedData.rewards = validatedData.reward.split(";");
+    }
+
     //update with validated data
     const updated = await marathonService.updateOne(validatedId, validatedData);
 
@@ -50,10 +55,13 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "Marathon updated successfully!",
-      data: {...updated,
+      data: {
+        ...updated,
         ...(updated?.imagePath && {
-          imagePath: `${req.protocol}://${req.get('host')}/uploads/photos/${updated.imagePath}`
-        })
+          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+            updated.imagePath
+          }`,
+        }),
       },
     };
 

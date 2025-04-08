@@ -49,9 +49,9 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const modifiedData = data.data.map((item) => {
       return {
         ...item,
-        imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
+        imagePath: item.imagePath ? `${req.protocol}://${req.get("host")}/uploads/photos/${
           item.imagePath
-        }`,
+        }` : null,
       };
     });
 
