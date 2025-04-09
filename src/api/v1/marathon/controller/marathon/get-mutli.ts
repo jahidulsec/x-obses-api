@@ -24,9 +24,11 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
       const modifiedData = data.data.map((item) => {
         return {
           ...item,
-          imagePath: `${req.protocol}://${req.get("host")}/uploads/photos/${
-            item.imagePath
-          }`,
+          imagePath: item.imagePath
+            ? `${req.protocol}://${req.get("host")}/uploads/photos/${
+                item.imagePath
+              }`
+            : null,
           joined:
             userData.data.filter((userMarathon) => userMarathon.id === item.id)
               .length > 0,
@@ -49,9 +51,11 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const modifiedData = data.data.map((item) => {
       return {
         ...item,
-        imagePath: item.imagePath ? `${req.protocol}://${req.get("host")}/uploads/photos/${
-          item.imagePath
-        }` : null,
+        imagePath: item.imagePath
+          ? `${req.protocol}://${req.get("host")}/uploads/photos/${
+              item.imagePath
+            }`
+          : null,
       };
     });
 
