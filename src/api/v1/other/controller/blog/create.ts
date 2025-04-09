@@ -12,6 +12,9 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
     const formData = req.body;
 
+    // get auth user
+    const authUser = req.user;
+
     //Add photo into car validate schema
     if (uploadedPhoto) {
       formData["imagePath"] = uploadedPhoto;
@@ -19,6 +22,9 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
     //Validate incoming body data with defined schema
     const validatedData = createBlogDTOSchema.parse(formData);
+
+    // add created by
+    validatedData.createdBy = authUser?.id as string;
 
     //create new with validated data
     const created = await otherService.createNew(validatedData);
