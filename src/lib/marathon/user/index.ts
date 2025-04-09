@@ -10,6 +10,7 @@ const getMulti = async (queries: marathonUsersQueryInputTypes) => {
   const size = queries?.size ?? 20;
   const page = queries?.page ?? 1;
   const sort = queries?.sort ?? "desc";
+  const marathonId = queries?.marathonId;
 
   const [data, count] = await Promise.all([
     db.marathonUser.findMany({
@@ -19,6 +20,7 @@ const getMulti = async (queries: marathonUsersQueryInputTypes) => {
             startsWith: queries.search || undefined,
           },
         },
+        marathonId: marathonId,
       },
       include: {
         user: {
@@ -46,6 +48,7 @@ const getMulti = async (queries: marathonUsersQueryInputTypes) => {
             startsWith: queries.search || undefined,
           },
         },
+        marathonId: marathonId,
       },
     }),
   ]);

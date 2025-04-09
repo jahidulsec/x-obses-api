@@ -20,6 +20,7 @@ export const marathonUsersQuerySchema = z.object({
   page: z.coerce.number().int().default(1),
   size: z.coerce.number().default(20),
   search: z.string().optional(),
+  marathonId: z.string().optional(),
 });
 
 export type createMarathonUserInputsTypes = z.infer<typeof createMarathonUserDTOSchema>;
