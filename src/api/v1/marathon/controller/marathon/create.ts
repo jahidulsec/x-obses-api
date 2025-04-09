@@ -25,7 +25,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = createMarathonDTOSchema.parse(formData);
 
     // create list of reward from form data
-    validatedData.rewards = validatedData.reward.split(";");
+    validatedData.rewards = validatedData.reward.split(",");
 
     // add admin info
     validatedData.createdBy = authUser?.id ?? "";

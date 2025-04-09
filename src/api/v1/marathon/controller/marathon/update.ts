@@ -42,7 +42,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 
     // create list of reward from form data
     if (validatedData.reward) {
-      validatedData.rewards = validatedData.reward.split(";");
+      validatedData.rewards = validatedData.reward.split(",");
     }
 
     //update with validated data
