@@ -20,6 +20,14 @@ const getMulti = async (queries: marathonUsersQueryInputTypes) => {
           },
         },
       },
+      include: {
+        user: {
+          select: {
+            fullName: true,
+            image: true,
+          },
+        },
+      },
       take: size,
       skip: size * (page - 1),
       orderBy: [
@@ -27,7 +35,7 @@ const getMulti = async (queries: marathonUsersQueryInputTypes) => {
           distanceKm: sort,
         },
         {
-          durationMs: 'asc',
+          durationMs: "asc",
         },
       ],
     }),
@@ -51,6 +59,14 @@ const getSingle = async (idObj: requiredIdTypes) => {
   //extract id from validated id by zod
   const data = await db.marathonUser.findUnique({
     where: { id },
+    include: {
+      user: {
+        select: {
+          fullName: true,
+          image: true,
+        },
+      },
+    },
   });
 
   return data;

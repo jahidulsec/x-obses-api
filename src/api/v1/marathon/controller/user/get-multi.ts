@@ -14,7 +14,17 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
     const responseData = {
       success: true,
       message: "Get marathon users successfully!",
-      data: data.data,
+      data: data.data.map((item) => {
+        return {
+          ...item,
+          user: {
+            fullName: item.user.fullName,
+            imagePath: item.user.image ? `${req.protocol}://${req.get("host")}/uploads/photos/${
+              item.user.image
+            }` : null,
+          },
+        };
+      }),
       pagination: {
         ...paginate(data.page, data.size, data.count),
       },
