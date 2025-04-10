@@ -19,6 +19,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     if (uploadedPhoto) {
       formData["imagePath"] = uploadedPhoto;
     }
+    
 
     //Validate incoming body data with defined schema
     const validatedData = createBlogDTOSchema.parse(formData);
