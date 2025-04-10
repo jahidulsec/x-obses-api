@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const createAdminDTOSchema = z.object({
-  name: z.string(),
-  username: z.string(),
-  password: z.string(),
+  name: z.string().min(3),
+  username: z.string().min(3),
+  password: z.string().min(3),
   role: z.enum(["admin", "superadmin"]),
 });
 
