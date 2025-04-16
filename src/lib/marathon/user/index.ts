@@ -75,6 +75,33 @@ const getSingle = async (idObj: requiredIdTypes) => {
   return data;
 };
 
+const getSingleLeaderboard = async (idObj: requiredIdTypes) => {
+  const { id } = idObj;
+
+  //extract id from validated id by zod
+  const user = await db.marathonUser.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  // get rank by stats
+  const data = await db.marathonUser.count({
+    where: {
+      distanceKm: {
+        gt: user?.distanceKm ?? 0,
+      },
+      durationMs: {
+        gt: user?.durationMs ?? 0,
+      },
+    },
+  });
+
+  const rank = data + 1;
+
+  return {user, rank};
+};
+
 const createNew = async (info: createMarathonUserInputsTypes) => {
   const data = await db.marathonUser.create({
     data: {
@@ -118,4 +145,5 @@ export = {
   createNew,
   updateOne,
   deleteOne,
+  getSingleLeaderboard,
 };

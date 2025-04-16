@@ -51,4 +51,10 @@ router
   .patch(verifyToken, controllers.updateMarathonUser)
   .delete(verifyToken, controllers.deleteMarathonUser);
 
+router.get(
+  "/user/:id/leaderboard",
+  verifyToken,
+  controllers.getSingleLeaderboard
+);
+
 export { router as marathonRoutes };

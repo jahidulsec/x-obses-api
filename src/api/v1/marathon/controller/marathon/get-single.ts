@@ -44,6 +44,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
               data.data.imagePath
             }`,
           }),
+          marathonUserId: userMarathon.data?.id,
           joined: userMarathon.data?.id === data.data?.id,
         },
         totalParticiants: data.totalParticiants,

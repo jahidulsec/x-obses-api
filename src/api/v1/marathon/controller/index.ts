@@ -13,6 +13,7 @@ import { getMulti as getMarathonUsers } from "./user/get-multi";
 import { getSingle as getMarathonUser } from "./user/get-single";
 import { updateMarathonUser } from "./user/update";
 import { deleteMarathonUser } from "./user/delete";
+import { getSingleLeaderboard } from "./user/get-single-leaderboard";
 
 export = {
   createMarathon,
@@ -27,4 +28,5 @@ export = {
   createMarathonUser,
   deleteMarathonUser,
   deleteReward,
+  getSingleLeaderboard
 };
