@@ -191,6 +191,7 @@ model MarathonUser {
   user     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   marathon Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, marathonId])
   @@map("marathon_user")
 }
 

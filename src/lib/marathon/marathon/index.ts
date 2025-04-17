@@ -187,7 +187,14 @@ const getSingleByUserId = async (idObj: requiredIdTypes, userId: string) => {
     }),
   ]);
 
-  return { data, totalParticiants, participants };
+  const marathonUser = await db.marathonUser.findMany({
+    where: {
+      marathonId: data?.id ?? "",
+      userId: userId,
+    },
+  });
+
+  return { data, totalParticiants, participants, marathonUser };
 };
 
 const getStats = async (type?: $Enums.MarathonType) => {
