@@ -44,17 +44,23 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
       notFoundError("Marathon does not exist");
     }
 
-
     //Validate incoming body data with defined schema
     const validatedData = updateMarathonUserDTOSchema.parse(formData);
 
+    // set data from validation
+    validatedData.marathonId = existingMarathon.data?.id;
+    validatedData.userId = existingMarathonUser?.userId;
+
     // distance check
-    if((validatedData?.distanceKm ?? 0) > Number(existingMarathon.data?.distanceKm) ) {
-      validatedData.distanceKm = existingMarathon.data?.distanceKm
+    if (
+      (validatedData?.distanceKm ?? 0) >
+      Number(existingMarathon.data?.distanceKm)
+    ) {
+      validatedData.distanceKm = existingMarathon.data?.distanceKm;
     }
 
     //update with validated data
-    const updated = await marathonService.updateOne(validatedId, validatedData);
+    const updated = await marathonUserService.updateOne(validatedId, validatedData);
 
     if (!updated) {
       serverError("Marathon user is not updated");
