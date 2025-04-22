@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout-plan";
 import userProfileService from "../../../../../lib/user/profile";
-import {
-  badRequestError,
-  notFoundError,
-} from "../../../../../utils/errors";
+import { badRequestError, notFoundError } from "../../../../../utils/errors";
 import { updateWorkOutPlanDTOSchema } from "../../../../../schemas/workout-plan";
 import db from "../../../../../db/db";
 import { countDays, Days } from "../../../../../utils/utils";
@@ -50,12 +47,48 @@ const updateUserWorkoutPlan = async (
     const validatedData = updateWorkOutPlanDTOSchema.parse(formData);
 
     // check schedule
+
+    // check schedule
+    if (validatedData.startDate && validatedData.endDate) {
+      const scheduleList = await db.workoutGoal.findMany({
+        where: {
+          startDate: {
+            gte: validatedData.startDate,
+          },
+          endDate: {
+            lte: validatedData.endDate,
+          },
+        },
+      });
+
+      if (scheduleList.length > 0) {
+        badRequestError("You already have an schedule");
+      }
+    }
+
     if (validatedData.startDate) {
       const scheduleList = await db.workoutGoal.findMany({
         where: {
-          endDate: {
+          startDate: {
             gte: validatedData.startDate,
           },
+        },
+      });
+
+      if (scheduleList.length > 0) {
+        badRequestError("You already have an schedule");
+      }
+    }
+
+    if (validatedData.endDate) {
+      const scheduleList = await db.workoutGoal.findMany({
+        where: {
+          startDate: {
+            gte: existingWorkoutplan?.startDate as Date,
+          },
+          endDate: {
+            lte: validatedData.endDate
+          }
         },
       });
 
