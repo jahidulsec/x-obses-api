@@ -58,6 +58,9 @@ const updateUserWorkoutPlan = async (
           endDate: {
             lte: validatedData.endDate,
           },
+          id: {
+            not: validatedId.id,
+          },
         },
       });
 
@@ -71,6 +74,9 @@ const updateUserWorkoutPlan = async (
         where: {
           startDate: {
             gte: validatedData.startDate,
+          },
+          id: {
+            not: validatedId.id,
           },
         },
       });
@@ -87,8 +93,11 @@ const updateUserWorkoutPlan = async (
             gte: existingWorkoutplan?.startDate as Date,
           },
           endDate: {
-            lte: validatedData.endDate
-          }
+            lte: validatedData.endDate,
+          },
+          id: {
+            not: validatedId.id,
+          },
         },
       });
 
