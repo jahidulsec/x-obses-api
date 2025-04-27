@@ -6,7 +6,7 @@ const generateAccessToken = (userId: string, role: string) => {
     { id: userId, role: role, type: "access" },
     process.env.ACCESS_TOKEN_SECRET as string,
     {
-      expiresIn: "1m",
+      expiresIn: "15m",
     }
   );
 };
