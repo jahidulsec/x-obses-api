@@ -52,6 +52,7 @@ const updateUserWorkoutPlan = async (
     if (validatedData.startDate && validatedData.endDate) {
       const scheduleList = await db.workoutGoal.findMany({
         where: {
+          userId: authUser?.id,
           startDate: {
             gte: validatedData.startDate,
           },
@@ -72,6 +73,7 @@ const updateUserWorkoutPlan = async (
     if (validatedData.startDate) {
       const scheduleList = await db.workoutGoal.findMany({
         where: {
+          userId: authUser?.id,
           startDate: {
             gte: validatedData.startDate,
           },
@@ -89,6 +91,7 @@ const updateUserWorkoutPlan = async (
     if (validatedData.endDate) {
       const scheduleList = await db.workoutGoal.findMany({
         where: {
+          userId: authUser?.id,
           startDate: {
             gte: existingWorkoutplan?.startDate as Date,
           },

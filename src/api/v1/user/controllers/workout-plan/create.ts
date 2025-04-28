@@ -40,6 +40,7 @@ const createUserWorkoutPlan = async (
     // check schedule
     const scheduleList = await db.workoutGoal.findMany({
       where: {
+        userId: authUser?.id,
         startDate: {
           gte: validatedData.startDate,
         },
