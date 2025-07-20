@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import { notFoundError, serverError } from "../../../../../utils/errors";
 import deleteImage from "../../../../../utils/delete-image";
 import upload from "../../../../../utils/upload";
-import otherService from "../../../../../lib/other/blog";
+import otherService from "../../../../../lib/other/banner";
 import { requiredIdSchema } from "../../../../../schemas/required-id";
-import { updateBlogDTOSchema } from "../../../../../schemas/blog";
+import { updateBannerDTOSchema } from "../../../../../schemas/banner";
 
 const update = async (req: Request, res: Response, next: NextFunction) => {
   let uploadedPhoto: string | null = null;
@@ -18,12 +18,12 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 
     const formData = req.body;
 
-    //check existing zone
-    const existingBlog = await otherService.getSingle(validatedId);
+    //check existing banner
+    const existingBanner = await otherService.getSingle(validatedId);
 
-    if (!existingBlog) {
+    if (!existingBanner) {
       //send not found error if not exist
-      notFoundError("Blog does not exist");
+      notFoundError("Banner does not exist");
     }
 
     if (fileData) {
@@ -35,23 +35,23 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
       // delete previous image
       deleteImage({
         folder: "photos",
-        image: existingBlog?.imagePath || "",
+        image: existingBanner?.imagePath || "",
       });
     }
 
     //Validate incoming body data with defined schema
-    const validatedData = updateBlogDTOSchema.parse(formData);
+    const validatedData = updateBannerDTOSchema.parse(formData);
 
     //update with validated data
     const updated = await otherService.updateOne(validatedId, validatedData);
 
     if (!updated) {
-      serverError("Blog is not updated");
+      serverError("Banner is not updated");
     }
 
     const responseData = {
       success: true,
-      message: "Blog updated successfully!",
+      message: "Banner updated successfully!",
       data: {
         ...updated,
         ...(updated.imagePath && {
@@ -77,4 +77,4 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { update as updateBlog };
+export { update as updateBanner };

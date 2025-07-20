@@ -29,4 +29,28 @@ router
     controllers.deleteBlog
   );
 
+// banner
+router
+  .route("/banner")
+  .get(controllers.getBanners)
+  .post(
+    verifyToken,
+    verifyRoles("admin", "superadmin"),
+    controllers.createBanner
+  );
+
+router
+  .route("/banner/:id")
+  .get(controllers.getBanner)
+  .patch(
+    verifyToken,
+    verifyRoles("admin", "superadmin"),
+    controllers.updateBanner
+  )
+  .delete(
+    verifyToken,
+    verifyRoles("admin", "superadmin"),
+    controllers.deleteBanner
+  );
+
 export { router as otherRoutes };

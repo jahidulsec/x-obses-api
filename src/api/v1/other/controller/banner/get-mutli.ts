@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
 import { paginate } from "../../../../../utils/pagination";
-import otherService from "../../../../../lib/other/blog";
-import { blogsQuerySchema } from "../../../../../schemas/blog";
+import otherService from "../../../../../lib/other/banner";
+import { bannersQuerySchema } from "../../../../../schemas/banner";
 
 const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // validate incoming body data with defined schema
-    const validatedQuery = blogsQuerySchema.parse(req.query);
+    const validatedQuery = bannersQuerySchema.parse(req.query);
 
     //get single item with validated id
     const data = await otherService.getMulti(validatedQuery);
@@ -24,7 +24,7 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
 
     const responseData = {
       success: true,
-      message: "Get blogs successfully!",
+      message: "Get banners successfully!",
       data: modifiedData,
       pagination: {
         ...paginate(data.page, data.size, data.count),
@@ -41,4 +41,4 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { get as getMulti };
+export { get as getBanners };

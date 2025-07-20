@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,15 +15,10 @@ model Admins {
   role      AdminRoles @default(admin)
   createdAt DateTime   @default(now()) @map("created_at")
   updateAt  DateTime   @updatedAt @map("updated_at")
-  marathon  Marathon[]
   Blogs     Blogs[]
+  marathon  Marathon[]
 
   @@map("admin")
-}
-
-enum AdminRoles {
-  superadmin
-  admin
 }
 
 model Users {
@@ -37,7 +26,6 @@ model Users {
   mobile       String         @unique @db.VarChar(50)
   fullName     String?        @map("full_name") @db.VarChar(255)
   email        String?        @db.VarChar(255)
-  image        String?        @db.VarChar(255)
   gender       String?        @db.VarChar(255)
   address      String?        @db.VarChar(255)
   birth        DateTime?
@@ -46,11 +34,12 @@ model Users {
   weight       Int?
   createdAt    DateTime       @default(now()) @map("created_at")
   updateAt     DateTime       @updatedAt @map("updated_at")
+  image        String?        @db.VarChar(255)
+  MarathonUser MarathonUser[]
   Otp          Otp[]
+  Steps        Steps[]
   Workout      Workout[]
   WorkoutGoal  WorkoutGoal[]
-  MarathonUser MarathonUser[]
-  Steps        Steps[]
 
   @@map("users")
 }
@@ -62,34 +51,27 @@ model Otp {
   code      String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  expiresAt DateTime @db.Timestamp(5)
+  expiresAt DateTime @default(now()) @db.Timestamp(5)
   useCase   UseCase
+  owner     Users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  owner Users? @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  @@index([userId], map: "otp_user_id_fkey")
   @@map("otp")
 }
-
-enum UseCase {
-  login
-  signup
-}
-
-//------ WORKOUT -------//
 
 model Workout {
   id         String       @id @default(uuid())
   userId     String       @map("user_id")
-  calories   Decimal      @default(0) @db.Decimal(10, 2)
-  distanceKm Decimal      @default(0) @map("distance_km") @db.Decimal(10, 3)
-  heartPts   Decimal      @default(0) @map("heart_pts") @db.Decimal(10, 2)
+  calories   Decimal      @default(0.00) @db.Decimal(10, 2)
+  heartPts   Decimal      @default(0.00) @map("heart_pts") @db.Decimal(10, 2)
   type       WorkoutType? @default(walking)
-  durationMs Int          @default(0) @map("duration_ms") // count in milliseconds
   createdAt  DateTime     @default(now()) @map("created_at")
   updatedAt  DateTime     @updatedAt @map("updated_at")
+  distanceKm Decimal      @default(0.000) @map("distance_km") @db.Decimal(10, 3)
+  durationMs Int          @default(0) @map("duration_ms")
+  user       Users        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  @@index([userId], map: "workout_user_id_fkey")
   @@map("workout")
 }
 
@@ -98,16 +80,10 @@ model Steps {
   userId    String   @map("user_id")
   steps     Int
   createdAt DateTime @default(now()) @map("created_at")
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  @@index([userId], map: "steps_user_id_fkey")
   @@map("steps")
-}
-
-enum WorkoutType {
-  running
-  walking
-  cycling
 }
 
 model WorkoutGoal {
@@ -116,55 +92,42 @@ model WorkoutGoal {
   bmi              Decimal?  @db.Decimal(4, 2)
   weightGoal       Int       @map("weight_goal")
   goalType         GoalType  @default(gain_muscle) @map("goal_type")
-  workoutTimeMs    Decimal?  @map("workout_time_ms") @db.Decimal(14, 2) // count in milliseconds
-  workoutDays      String?   @map("workout_days")
   activateReminder Boolean?  @default(false) @map("activate_reminder")
-  reminderTime     DateTime? @db.Time()
+  reminderTime     DateTime? @db.Time(0)
   totalDays        Int?      @map("total_days")
-  caloriesGoal     Int?      @map("calories_goal")
-  startDate        DateTime? @default(now()) @map("start_date")
-  endDate          DateTime? @map("end_date")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
-
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endDate          DateTime? @map("end_date")
+  startDate        DateTime? @default(now()) @map("start_date")
+  workoutDays      String?   @map("workout_days")
+  caloriesGoal     Int?      @map("calories_goal")
+  workoutTimeMs    Decimal?  @map("workout_time_ms") @db.Decimal(14, 2)
+  user             Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, createdAt])
   @@map("workout_goal")
 }
 
-enum GoalType {
-  gain_muscle
-  keep_fit
-  lose_weight
-}
-
-//------ MARATHON -------//
 model Marathon {
-  id          String       @id @default(uuid())
-  title       String
-  description String       @db.Text
-  about       String       @db.Text
-  distanceKm  Int
-  location    String?
-  startDate   DateTime     @map("start_date")
-  endDate     DateTime     @map("end_date")
-  imagePath   String?      @map("image_path")
-  type        MarathonType @default(onsite)
-  createdBy   String?      @map("created_by")
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
-
-  admin        Admins?        @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+  id           String         @id @default(uuid())
+  title        String
+  description  String         @db.Text
+  about        String         @db.Text
+  startDate    DateTime       @map("start_date")
+  endDate      DateTime       @map("end_date")
+  imagePath    String?        @map("image_path")
+  type         MarathonType   @default(onsite)
+  createdBy    String?        @map("created_by")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  location     String?
+  distanceKm   Int
+  admin        Admins?        @relation(fields: [createdBy], references: [id])
   MarathonUser MarathonUser[]
   Rewards      Rewards[]
 
+  @@index([createdBy], map: "marathon_created_by_fkey")
   @@map("marathon")
-}
-
-enum MarathonType {
-  virtual
-  onsite
 }
 
 model Rewards {
@@ -173,9 +136,9 @@ model Rewards {
   marathonId String   @map("marathon_id")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+  marathon   Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
 
-  marathon Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
-
+  @@index([marathonId], map: "rewards_marathon_id_fkey")
   @@map("rewards")
 }
 
@@ -183,31 +146,67 @@ model MarathonUser {
   id         String   @id @default(uuid())
   userId     String   @map("user_id")
   marathonId String   @map("marathon_id")
-  distanceKm Decimal? @default(0) @map("distance_km") @db.Decimal(8, 2)
-  durationMs Int?     @default(0) @map("duration_ms") // count in milliseconds
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
-
-  user     Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  marathon Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
+  distanceKm Decimal? @default(0.00) @map("distance_km") @db.Decimal(8, 2)
+  durationMs Int?     @default(0) @map("duration_ms")
+  marathon   Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
+  user       Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, marathonId])
+  @@index([marathonId], map: "marathon_user_marathon_id_fkey")
   @@map("marathon_user")
 }
 
-// -------- BLOGS ---------- //
 model Blogs {
   id          String   @id @default(uuid())
-  createdBy   String?  @map("created_by")
   title       String
   readTime    Int      @map("read_time")
   description String   @db.Text
   details     String   @db.Text
-  imagePath   String   @map("image_path")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  createdBy   String?  @map("created_by")
+  imagePath   String   @map("image_path")
+  admin       Admins?  @relation(fields: [createdBy], references: [id])
 
-  admin Admins? @relation(fields: [createdBy], references: [id], onDelete: SetNull)
-
+  @@index([createdBy], map: "blogs_created_by_fkey")
   @@map("blogs")
+}
+
+model Banner {
+  id        String   @id @default(uuid()) @db.Char(36)
+  title     String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(0)
+  imagePath String   @map("image_path") @db.VarChar(255)
+
+  @@map("banner")
+}
+
+enum AdminRoles {
+  superadmin
+  admin
+}
+
+enum UseCase {
+  login
+  signup
+}
+
+enum WorkoutType {
+  running
+  walking
+  cycling
+}
+
+enum GoalType {
+  gain_muscle
+  keep_fit
+  lose_weight
+}
+
+enum MarathonType {
+  virtual
+  onsite
 }
