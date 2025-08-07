@@ -58,8 +58,11 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
       refreshToken = generateRefreshToken(existingOtpProfile?.userId as string);
     }
 
-    // delete otp
-    await authService.deleteOtp(validatedId);
+    // avoid test otp
+    if (existingOtpProfile?.userId !== "1") {
+      // delete otp
+      await authService.deleteOtp(validatedId);
+    }
 
     const responseData = {
       success: true,

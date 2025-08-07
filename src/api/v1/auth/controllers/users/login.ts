@@ -24,22 +24,26 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     // send otp to mobile
     const message = `Your One-Time Password (OTP) for X-Obses login is ${created.code}.`;
 
-    const send = await fetch(
-      `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
-      {
-        method: "GET",
-      }
-    );
+    // avoid test number
+    if (validatedData.mobile !== "01777888555") {
+      const send = await fetch(
+        `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
+        {
+          method: "GET",
+        }
+      );
 
-    if (!send.ok) {
-      serverError("Something went wrong!");
+      if (!send.ok) {
+        serverError("Something went wrong!");
+      }
     }
+
 
     const responseData = {
       success: true,
       message: "OTP is sent to " + validatedData.mobile,
       data: {
-        id: created.id,
+        id: validatedData.mobile == "01777888555" ? "1" : created.id,
         userId: created.userId,
         mobile: validatedData.mobile,
         expireAt: created.expiresAt,
