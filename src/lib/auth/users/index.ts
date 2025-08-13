@@ -3,7 +3,10 @@ import { requiredIdTypes } from "../../../schemas/required-id";
 import { createLoginInputTypes } from "../../../schemas/user-login";
 import { addMinutesToDate, generateOtp } from "../../../utils/otp";
 
-const getLoginOtp = async (info: createLoginInputTypes) => {
+const getLoginOtp = async (
+  info: createLoginInputTypes,
+  defaultCode?: boolean
+) => {
   // get user
   const user = await db.users.findUnique({
     where: { mobile: info.mobile },
@@ -11,7 +14,11 @@ const getLoginOtp = async (info: createLoginInputTypes) => {
 
   //   generate otp
   const expireAt = addMinutesToDate(new Date(), 5);
-  const code = generateOtp();
+  let code = generateOtp();
+
+  if (defaultCode === true) {
+    code = "123456";
+  }
 
   // create otp by user id
   const data = await db.otp.create({
@@ -26,10 +33,17 @@ const getLoginOtp = async (info: createLoginInputTypes) => {
   return data;
 };
 
-const getSignUpOtp = async (info: createLoginInputTypes) => {
+const getSignUpOtp = async (
+  info: createLoginInputTypes,
+  defaultCode?: boolean
+) => {
   //   generate otp
   const expireAt = addMinutesToDate(new Date(), 5);
-  const code = generateOtp();
+  let code = generateOtp();
+
+  if (defaultCode === true) {
+    code = "123456";
+  }
 
   // create otp by user id
   const data = await db.otp.create({

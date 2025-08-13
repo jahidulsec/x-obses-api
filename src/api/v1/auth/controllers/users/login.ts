@@ -18,6 +18,25 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       notFoundError("User does not exist with this mobile");
     }
 
+    // for test
+    if (!user?.mobile.startsWith("01")) {
+      const created = await authService.getLoginOtp(validatedData, true);
+
+      const responseData = {
+        success: true,
+        message: "OTP is sent to " + validatedData.mobile,
+        data: {
+          id: created.id,
+          userId: created.userId,
+          mobile: validatedData.mobile,
+          expireAt: created.expiresAt,
+        },
+      };
+
+      //send success response
+      return res.status(200).json(responseData);
+    }
+
     //create new with validated data
     const created = await authService.getLoginOtp(validatedData);
 
@@ -25,25 +44,22 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const message = `Your One-Time Password (OTP) for X-Obses login is ${created.code}.`;
 
     // avoid test number
-    if (validatedData.mobile !== "01777888555") {
-      const send = await fetch(
-        `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
-        {
-          method: "GET",
-        }
-      );
-
-      if (!send.ok) {
-        serverError("Something went wrong!");
+    const send = await fetch(
+      `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
+      {
+        method: "GET",
       }
-    }
+    );
 
+    if (!send.ok) {
+      serverError("Something went wrong!");
+    }
 
     const responseData = {
       success: true,
       message: "OTP is sent to " + validatedData.mobile,
       data: {
-        id: validatedData.mobile == "01777888555" ? "1" : created.id,
+        id: created.id,
         userId: created.userId,
         mobile: validatedData.mobile,
         expireAt: created.expiresAt,

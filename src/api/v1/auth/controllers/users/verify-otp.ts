@@ -29,7 +29,7 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
       existingOtpProfile.code != validatedData.code
     ) {
       //send not found error if not exist
-      notFoundError("Invalid OTP");
+      badRequestError("Invalid OTP");
     }
 
     // check otp expire time
@@ -58,11 +58,8 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
       refreshToken = generateRefreshToken(existingOtpProfile?.userId as string);
     }
 
-    // avoid test otp
-    if (existingOtpProfile?.userId !== "1") {
-      // delete otp
-      await authService.deleteOtp(validatedId);
-    }
+    // delete otp
+    await authService.deleteOtp(validatedId);
 
     const responseData = {
       success: true,

@@ -22,6 +22,28 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
       badRequestError("User already exist with this mobile");
     }
 
+    // for testing
+    if (!validatedData.mobile.startsWith("01")) {
+      //create new with validated data
+      const created = await authService.getSignUpOtp(validatedData, true);
+
+      const responseData = {
+        success: true,
+        message: "OTP is sent to " + validatedData.mobile,
+        data: {
+          id: created.id,
+          userId: created.userId,
+          mobile: validatedData.mobile,
+          expireAt: created.expiresAt,
+        },
+      };
+
+      console.log(created)
+
+      //send success response
+      return res.status(201).json(responseData);
+    }
+
     //create new with validated data
     const created = await authService.getSignUpOtp(validatedData);
 
