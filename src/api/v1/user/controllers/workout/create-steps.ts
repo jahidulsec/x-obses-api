@@ -2,10 +2,7 @@ import { Request, Response, NextFunction } from "express-serve-static-core";
 import userService from "../../../../../lib/user/workout";
 import userProfileService from "../../../../../lib/user/profile";
 import { createStepsDTOSchema } from "../../../../../schemas/workout";
-import {
-  calculateCaloriesBurn,
-  calculateHeartPts,
-} from "../../../../../utils/formula";
+
 
 async function createNew(req: Request, res: Response, next: NextFunction) {
   try {
