@@ -4,8 +4,10 @@ import { deleteUserByToken } from "./profile/delete-by-token";
 
 // workout
 import { getUserWorkoutsByToken } from "./workout/get-all-by-token";
+import { getActivityHistory } from "./workout/get-activity-history";
 import { createUserWorkout } from "./workout/create-by-token";
 import { createUserStep } from "./workout/create-steps";
+import { getMyWorkouts } from "./workout/get-my-workouts";
 
 //workout plan
 import { createUserWorkoutPlan } from "./workout-plan/create";
@@ -19,6 +21,7 @@ export = {
   updateUserByToken,
   deleteUserByToken,
   getUserWorkoutsByToken,
+  getActivityHistory,
   createUserWorkout,
   createUserWorkoutPlan,
   getUserWorkoutPlansByToken,
@@ -26,4 +29,5 @@ export = {
   deleteUserWorkoutPlan,
   getUserWorkoutPlan,
   createUserStep,
+  getMyWorkouts,
 };
