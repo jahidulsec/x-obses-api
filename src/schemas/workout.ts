@@ -19,6 +19,7 @@ export const workOutsQuerySchema = z.object({
   size: z.coerce.number().default(20),
   search: z.string().optional(),
   view: z.enum(["daily", "weekly", "monthly"]).default("daily").optional(),
+  date: z.string().optional(),
 });
 
 export type createWorkOutInputsTypes = z.infer<typeof createWorkOutDTOSchema>;

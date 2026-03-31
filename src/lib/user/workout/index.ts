@@ -176,7 +176,7 @@ const getActivityHistory = async (
 ) => {
   const { id } = idObj;
   const view = queries?.view || "daily";
-  const now = new Date();
+  const now = queries?.date ? new Date(queries.date) : new Date();
   let startDate: Date;
 
   if (view === "monthly") {
@@ -271,7 +271,7 @@ const getActivityHistory = async (
     // Weekly or Monthly
     const days = view === "weekly" ? 7 : 30;
     for (let i = days; i >= 0; i--) {
-      const d = new Date();
+      const d = new Date(now);
       d.setDate(now.getDate() - i);
       const label = d.toISOString().split("T")[0];
       pointsMap[label] = { steps: 0, calories: 0, workoutTime: 0 };
