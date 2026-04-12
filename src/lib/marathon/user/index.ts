@@ -99,13 +99,26 @@ const getSingleLeaderboard = async (idObj: requiredIdTypes) => {
 
   const rank = data + 1;
 
-  return {user, rank};
+  return { user, rank };
 };
 
 const createNew = async (info: createMarathonUserInputsTypes) => {
   const data = await db.marathonUser.create({
     data: {
       ...info,
+    },
+  });
+
+  return data;
+};
+
+const checkUserInMarathon = async (userId: string, marathonId: string) => {
+  const data = await db.marathonUser.findUnique({
+    where: {
+      userId_marathonId: {
+        userId,
+        marathonId,
+      },
     },
   });
 
@@ -146,4 +159,5 @@ export = {
   updateOne,
   deleteOne,
   getSingleLeaderboard,
+  checkUserInMarathon,
 };

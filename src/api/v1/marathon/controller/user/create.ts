@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express-serve-static-core";
-import { notFoundError, unauthorizedError } from "../../../../../utils/errors";
+import {
+  notFoundError,
+  unauthorizedError,
+  badRequestError,
+} from "../../../../../utils/errors";
 import userService from "../../../../../lib/user/profile";
 import marathonService from "../../../../../lib/marathon/user";
 import { createMarathonUserDTOSchema } from "../../../../../schemas/marathon-user";
@@ -27,6 +31,16 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
     // Validate incoming body data with defined schema
     const validatedData = createMarathonUserDTOSchema.parse(formData);
+
+    // check if user already joined
+    const isJoined = await marathonService.checkUserInMarathon(
+      validatedData.userId,
+      validatedData.marathonId
+    );
+
+    if (isJoined) {
+      badRequestError("You are already joined in this marathon!");
+    }
 
     // create new with validated data
     const created = await marathonService.createNew(validatedData);
