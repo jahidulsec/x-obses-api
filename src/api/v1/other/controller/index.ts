@@ -10,6 +10,7 @@ import { getBanners } from "./banner/get-mutli";
 import { createBanner } from "./banner/create";
 import { updateBanner } from "./banner/update";
 import { deleteBanner } from "./banner/delete";
+import { getCalenderHolidays } from "./calender/get-holidays";
 
 export = {
   createBlog,
@@ -22,4 +23,5 @@ export = {
   createBanner,
   updateBanner,
   deleteBanner,
+  getCalenderHolidays
 };

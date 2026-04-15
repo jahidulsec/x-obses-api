@@ -12,7 +12,7 @@ router
   .post(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.createBlog
+    controllers.createBlog,
   );
 
 router
@@ -21,12 +21,12 @@ router
   .patch(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.updateBlog
+    controllers.updateBlog,
   )
   .delete(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.deleteBlog
+    controllers.deleteBlog,
   );
 
 // banner
@@ -36,7 +36,7 @@ router
   .post(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.createBanner
+    controllers.createBanner,
   );
 
 router
@@ -45,12 +45,15 @@ router
   .patch(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.updateBanner
+    controllers.updateBanner,
   )
   .delete(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.deleteBanner
+    controllers.deleteBanner,
   );
+
+// calender
+router.get("/calender/holidays", controllers.getCalenderHolidays);
 
 export { router as otherRoutes };
