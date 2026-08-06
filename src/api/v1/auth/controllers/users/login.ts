@@ -3,6 +3,7 @@ import { createLoginDTOSchema } from "../../../../../schemas/user-login";
 import authService from "../../../../../lib/auth/users";
 import userService from "../../../../../lib/user/profile";
 import { notFoundError, serverError } from "../../../../../utils/errors";
+import { sendSMS } from "../../../../../utils/sms";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -44,15 +45,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const message = `Your One-Time Password (OTP) for X-Obses login is ${created.code}.`;
 
     // avoid test number
-    const send = await fetch(
-      `https://api.mobireach.com.bd/SendTextMessage?Username=${process.env.SMS_USERNAME}&Password=${process.env.SMS_PASSWORD}&From=Impala&To=${validatedData.mobile}&Message=${message}`,
-      {
-        method: "GET",
-      }
-    );
-
-    if (!send.ok) {
-      serverError("Something went wrong!");
+    if (created.mobile) {
+      sendSMS(created.mobile, message).catch((err) => console.error(err));
     }
 
     const responseData = {
