@@ -33,6 +33,7 @@
     "jest-config": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "node-ical": "^0.26.0",
     "passport": "^0.7.0",
     "supertest": "^7.0.0",
     "uuid": "^11.1.0",
@@ -54,7 +55,7 @@
     "jest-mock-extended": "^4.0.0-beta1",
     "nanoid": "^5.0.8",
     "nodemon": "^3.1.7",
-    "prisma": "^6.5.0",
+    "prisma": "^6.19.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"

@@ -19,6 +19,9 @@ router
   .get(verifyToken, controllers.getUserWorkoutsByToken)
   .post(verifyToken, controllers.createUserWorkout);
 
+router.get("/workout/history", verifyToken, controllers.getActivityHistory);
+router.get("/workout/list", verifyToken, controllers.getMyWorkouts);
+
 router.post("/workout/steps", verifyToken, controllers.createUserStep);
 
 // ---------- WORKOUT PLAN -------------- //

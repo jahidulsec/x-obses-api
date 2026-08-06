@@ -7,7 +7,6 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../../../../../utils/token";
-import { addMinutesToDate } from "../../../../../utils/otp";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
