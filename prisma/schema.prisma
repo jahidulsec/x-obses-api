@@ -109,22 +109,23 @@ model WorkoutGoal {
 }
 
 model Marathon {
-  id           String         @id @default(uuid())
-  title        String
-  description  String         @db.Text
-  about        String         @db.Text
-  startDate    DateTime       @map("start_date")
-  endDate      DateTime       @map("end_date")
-  imagePath    String?        @map("image_path")
-  type         MarathonType   @default(onsite)
-  createdBy    String?        @map("created_by")
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  location     String?
-  distanceKm   Int
-  admin        Admins?        @relation(fields: [createdBy], references: [id])
-  MarathonUser MarathonUser[]
-  Rewards      Rewards[]
+  id                String              @id @default(uuid())
+  title             String
+  description       String              @db.Text
+  about             String              @db.Text
+  startDate         DateTime            @map("start_date")
+  endDate           DateTime            @map("end_date")
+  imagePath         String?             @map("image_path")
+  type              MarathonType        @default(onsite)
+  createdBy         String?             @map("created_by")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  location          String?
+  distanceKm        Int
+  admin             Admins?             @relation(fields: [createdBy], references: [id])
+  marathon_age_rule marathon_age_rule[]
+  MarathonUser      MarathonUser[]
+  Rewards           Rewards[]
 
   @@index([createdBy], map: "marathon_created_by_fkey")
   @@map("marathon")
@@ -143,15 +144,16 @@ model Rewards {
 }
 
 model MarathonUser {
-  id         String   @id @default(uuid())
-  userId     String   @map("user_id")
-  marathonId String   @map("marathon_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  distanceKm Decimal? @default(0.00) @map("distance_km") @db.Decimal(8, 2)
-  durationMs Int?     @default(0) @map("duration_ms")
-  marathon   Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
-  user       Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  marathonId      String   @map("marathon_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  distanceKm      Decimal? @default(0.00) @map("distance_km") @db.Decimal(8, 2)
+  durationMs      Int?     @default(0) @map("duration_ms")
+  submissionCount Int?     @default(0) @map("submission_count")
+  marathon        Marathon @relation(fields: [marathonId], references: [id], onDelete: Cascade)
+  user            Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, marathonId])
   @@index([marathonId], map: "marathon_user_marathon_id_fkey")
@@ -182,6 +184,19 @@ model Banner {
   imagePath String   @map("image_path") @db.VarChar(255)
 
   @@map("banner")
+}
+
+model marathon_age_rule {
+  id          String    @id @default(uuid()) @db.VarChar(36)
+  marathonId  String    @map("marathon_id")
+  age_min     Int?
+  age_max     Int?
+  distance_km Int
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+  updated_at  DateTime? @default(now()) @db.Timestamp(0)
+  marathon    Marathon  @relation(fields: [marathonId], references: [id], onDelete: Cascade, map: "fk_marathon_age_rule_marathon")
+
+  @@index([marathonId], map: "fk_marathon_age_rule_marathon")
 }
 
 enum AdminRoles {
