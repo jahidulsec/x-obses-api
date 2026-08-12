@@ -54,7 +54,7 @@ const getMulti = async (queries: marathonsQueryInputTypes) => {
 
 const getMultiByUserId = async (
   queries: marathonsQueryInputTypes,
-  userId: string
+  userId: string,
 ) => {
   const size = queries?.size ?? 20;
   const page = queries?.page ?? 1;
@@ -118,6 +118,7 @@ const getSingle = async (idObj: requiredIdTypes) => {
       where: { id },
       include: {
         Rewards: true,
+        marathoAgeRule: true,
       },
     }),
     db.marathonUser.count({
@@ -162,6 +163,7 @@ const getSingleByUserId = async (idObj: requiredIdTypes, userId: string) => {
       },
       include: {
         Rewards: true,
+        marathoAgeRule: true,
       },
     }),
     db.marathonUser.count({
@@ -233,9 +235,17 @@ const createNew = async (info: createMarathonInputsTypes) => {
           data: rewardsList,
         },
       },
+      ...(info.ageRule && {
+        marathoAgeRule: {
+          createMany: {
+            data: info.ageRule,
+          },
+        },
+      }),
     },
     include: {
       Rewards: true,
+      marathoAgeRule: true,
     },
   });
 
@@ -244,7 +254,7 @@ const createNew = async (info: createMarathonInputsTypes) => {
 
 const updateOne = async (
   idObj: requiredIdTypes,
-  info: updateMarathonInputTypes
+  info: updateMarathonInputTypes,
 ) => {
   //extract id from validated id by zod
   const { id } = idObj;

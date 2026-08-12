@@ -9,7 +9,7 @@
     "dev": "nodemon ./src/index.ts",
     "db:migrate": "prisma migrate dev",
     "db:pull": "prisma db pull",
-    "db:generate": "prisma db generate",
+    "db:generate": "prisma generate",
     "createadmin": "ts-node ./src/prompt.ts"
   },
   "repository": {
@@ -25,8 +25,8 @@
   "homepage": "https://github.com/jahidulsec/x-obses-api#readme",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^6.5.0",
-    "@prisma/extension-accelerate": "^1.2.1",
+    "@prisma/adapter-mariadb": "^7.9.1",
+    "@prisma/client": "^7.9.1",
     "@types/morgan": "^1.9.9",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -58,7 +58,7 @@
     "jest-mock-extended": "^4.0.0-beta1",
     "nanoid": "^5.0.8",
     "nodemon": "^3.1.7",
-    "prisma": "^6.19.2",
+    "prisma": "^7.9.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
