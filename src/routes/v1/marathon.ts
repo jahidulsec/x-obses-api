@@ -11,7 +11,7 @@ router
   .post(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.createMarathon
+    controllers.createMarathon,
   )
   .get(controllers.getMulti);
 
@@ -20,13 +20,13 @@ router
   .patch(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.updateMarathon
+    controllers.updateMarathon,
   )
   .get(controllers.getSingle)
   .delete(
     verifyToken,
     verifyRoles("admin", "superadmin"),
-    controllers.deleteMarathon
+    controllers.deleteMarathon,
   );
 
 router.get("/stats/marathon", controllers.getMarathonStats);
@@ -36,7 +36,15 @@ router.delete(
   "/marathon/reward/:id",
   verifyToken,
   verifyRoles("admin", "superadmin"),
-  controllers.deleteReward
+  controllers.deleteReward,
+);
+
+// delete marathon age rule
+router.delete(
+  "/marathon/age-rule/:id",
+  verifyToken,
+  verifyRoles("admin", "superadmin"),
+  controllers.deleteAgeRule,
 );
 
 // marathon user
@@ -54,7 +62,7 @@ router
 router.get(
   "/user/:id/leaderboard",
   verifyToken,
-  controllers.getSingleLeaderboard
+  controllers.getSingleLeaderboard,
 );
 
 export { router as marathonRoutes };

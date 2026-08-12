@@ -6,6 +6,7 @@ import { getMulti } from "./marathon/get-mutli";
 import { getSingle } from "./marathon/get-single";
 import { getMarathonStats } from "./marathon/get-stats";
 import { deleteReward } from "./marathon/delete-reward";
+import { deleteAgeRule } from "./marathon/age-rule/delete-rule";
 
 // marathon user
 import { createMarathonUser } from "./user/create";
@@ -28,5 +29,6 @@ export = {
   createMarathonUser,
   deleteMarathonUser,
   deleteReward,
-  getSingleLeaderboard
+  getSingleLeaderboard,
+  deleteAgeRule,
 };

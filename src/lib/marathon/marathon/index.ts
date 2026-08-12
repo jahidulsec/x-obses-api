@@ -281,6 +281,13 @@ const updateOne = async (
           },
         },
       }),
+      ...(info.ageRule && {
+        marathoAgeRule: {
+          createMany: {
+            data: info.ageRule,
+          },
+        },
+      }),
     },
     include: {
       Rewards: true,
@@ -308,6 +315,14 @@ const deleteReward = async (id: string) => {
   return deleted;
 };
 
+const deleteMarathonUserRule = async (id: string) => {
+  const deleted = await db.marathoAgeRule.delete({
+    where: { id: id },
+  });
+
+  return deleted;
+};
+
 export = {
   getMulti,
   getMultiByUserId,
@@ -318,4 +333,5 @@ export = {
   deleteOne,
   getStats,
   deleteReward,
+  deleteMarathonUserRule,
 };
